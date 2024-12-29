@@ -37,8 +37,10 @@ const HomePage = () => {
     setVehicleDetails(null);
 
     try {
-      // Test data for AB12CBE
-      if (regNumber.trim().toUpperCase() === 'AB12CBE') {
+      const cleanReg = regNumber.trim().toUpperCase();
+      
+      // Test case for AB12CBE
+      if (cleanReg === 'AB12CBE') {
         setVehicleDetails({
           make: 'BMW',
           model: '320d',
@@ -59,8 +61,8 @@ const HomePage = () => {
         return;
       }
 
-      console.log('Looking up registration:', regNumber);
-      const response = await axios.get(`/api/${regNumber.trim()}`);
+      // Make the API call for all other registrations
+      const response = await axios.get(`/api/vehicle/${cleanReg}`);
       console.log('API Response:', response.data);
       
       if (response.data.status === 'success') {
@@ -71,48 +73,35 @@ const HomePage = () => {
           return;
         }
 
-        // Get power and torque figures from the performance data
-        let basePower = 0;
-        let targetPower = 0;
-        let baseTorque = 0;
-        let targetTorque = 0;
-
-        if (performance_reg_data?.performance_figures) {
-          const figures = performance_reg_data.performance_figures;
-          basePower = parseInt(figures.original.power);
-          targetPower = parseInt(figures.modified.power);
-          baseTorque = parseInt(figures.original.torque);
-          targetTorque = parseInt(figures.modified.torque);
-        }
-
         setVehicleDetails({
           make: performance_reg_data?.brand || vehicle_data_only?.make || 'Unknown',
           model: performance_reg_data?.model || vehicle_data_only?.model || 'Unknown',
-          year: performance_reg_data?.year || 'Unknown',
-          fuel: performance_reg_data?.specs?.fuel || vehicle_data_only?.fuel || 'Unknown',
-          engine: performance_reg_data?.specs?.engine || `${vehicle_data_only?.cc || ''} cc` || 'Unknown',
+          year: performance_reg_data?.year || vehicle_data_only?.year || 'Unknown',
+          fuel: performance_reg_data?.specs?.fuel || vehicle_data_only?.fuel_type || 'Unknown',
+          engine: performance_reg_data?.specs?.engine || `${vehicle_data_only?.engine_capacity || ''} ${vehicle_data_only?.fuel_type || ''}` || 'Unknown',
           ecu: performance_reg_data?.specs?.ecu || 'Not Available',
-          variant: performance_reg_data?.variant || 'Standard',
+          variant: performance_reg_data?.variant || vehicle_data_only?.model_variant || 'Standard',
           transmission: vehicle_data_only?.transmission || 'Unknown',
           potential: {
-            basePower,
-            targetPower,
-            baseTorque,
-            targetTorque
+            basePower: parseInt(performance_reg_data?.performance_figures?.original?.power) || parseInt(vehicle_data_only?.power) || 0,
+            targetPower: parseInt(performance_reg_data?.performance_figures?.modified?.power) || Math.round(parseInt(vehicle_data_only?.power) * 1.25) || 0,
+            baseTorque: parseInt(performance_reg_data?.performance_figures?.original?.torque) || parseInt(vehicle_data_only?.torque) || 0,
+            targetTorque: parseInt(performance_reg_data?.performance_figures?.modified?.torque) || Math.round(parseInt(vehicle_data_only?.torque) * 1.25) || 0
           }
         });
       } else {
-        const errorMessage = response.data.errors?.[0]?.message || 'Vehicle lookup failed. Please try again.';
-        setError(errorMessage);
+        throw new Error(response.data.message || 'Failed to fetch vehicle data');
       }
-    } catch (error) {
-      console.error('Error looking up vehicle:', error);
-      if (error.response?.status === 500) {
-        setError('Server error. Please try again later.');
-      } else if (error.code === 'ERR_NETWORK') {
+    } catch (err) {
+      console.error('Error looking up registration:', err);
+      if (err.response?.status === 404) {
+        setError('Vehicle not found. Please check the registration number.');
+      } else if (err.response?.status === 429) {
+        setError('Too many requests. Please try again in a few minutes.');
+      } else if (err.code === 'ERR_NETWORK') {
         setError('Network error. Please check your connection.');
       } else {
-        setError(error.message || 'Error looking up vehicle. Please try again.');
+        setError(err.message || 'Unable to lookup vehicle details. Please try again later.');
       }
     } finally {
       setIsLoading(false);
@@ -215,7 +204,7 @@ const HomePage = () => {
                             <span className="flex items-center" role="status">
                               <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12 11.955 11.955 0 01-8 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                               </svg>
                               Looking up...
                             </span>
@@ -418,7 +407,7 @@ const HomePage = () => {
                   <dt>
                     <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary text-white">
                       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 014 12 11.955 11.955 0 01-8 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 014 12 11.955 11.955 0 01-8 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                       </svg>
                     </div>
                     <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Expert Technicians</p>

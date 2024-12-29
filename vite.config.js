@@ -19,6 +19,14 @@ export default defineConfig({
     strictPort: true,
     hmr: {
       clientPort: 443
+    },
+    proxy: {
+      '/api': {
+        target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
     }
   },
   build: {
