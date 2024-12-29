@@ -14,25 +14,23 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: true,
+    host: '0.0.0.0',
     port: 3000,
     strictPort: true,
-    proxy: {
-      '/api': {
-        target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
+    hmr: {
+      clientPort: 443
     }
   },
   build: {
+    outDir: 'dist',
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-        },
-      },
-    },
-    chunkSizeWarningLimit: 1000,
-  },
+          ui: ['@headlessui/react', '@heroicons/react']
+        }
+      }
+    }
+  }
 });
