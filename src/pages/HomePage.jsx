@@ -62,7 +62,7 @@ const HomePage = () => {
       }
 
       // Make the API call for all other registrations
-      const response = await axios.get(`/api/reg/${cleanReg}`);
+      const response = await axios.get(`/api/${cleanReg}`);
       console.log('API Response:', response.data);
       
       if (response.data.status === 'success') {

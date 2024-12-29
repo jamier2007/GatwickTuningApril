@@ -17,15 +17,20 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000,
     strictPort: true,
-    hmr: {
-      clientPort: 443
-    },
+    hmr: process.env.REPLIT_ENVIRONMENT 
+      ? {
+          clientPort: 443,
+          host: process.env.REPLIT_URL
+        }
+      : {
+          port: 3000
+        },
     proxy: {
       '/api': {
         target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '/api')
+        rewrite: (path) => path.replace(/^\/api\//, '')
       }
     }
   },
