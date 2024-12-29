@@ -25,7 +25,7 @@ export default defineConfig({
         target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path) => path.replace(/^\/api/, '/api')
       }
     }
   },
