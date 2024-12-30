@@ -220,9 +220,10 @@ const ServicesPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">AdBlue Delete</h3>
-                <p className="text-gray-300 mb-4">
-                  Professional AdBlue system solutions for off-road and track vehicles.
+                <h3 className="text-2xl font-bold text-white">AdBlue Delete</h3>
+                <p className="mt-4 text-gray-300">Professional AdBlue system solutions</p>
+                <p className="mt-8">
+                  <span className="text-4xl font-bold text-white">£350</span>
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-center text-gray-300">
@@ -245,7 +246,7 @@ const ServicesPage = () => {
                   </li>
                 </ul>
                 <div className="mt-4">
-                  <span className="text-2xl font-bold text-white">£250</span>
+                  <span className="text-2xl font-bold text-white">£350</span>
                   <Link 
                     to="/contact" 
                     className="ml-4 inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"

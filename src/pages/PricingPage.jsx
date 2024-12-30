@@ -183,7 +183,7 @@ const PricingPage = () => {
                   <h3 className="text-2xl font-bold text-white">AdBlue Delete</h3>
                   <p className="mt-4 text-gray-300">Professional AdBlue system solutions</p>
                   <p className="mt-8">
-                    <span className="text-4xl font-bold text-white">£250</span>
+                    <span className="text-4xl font-bold text-white">£350</span>
                   </p>
                   <ul className="mt-6 space-y-4">
                     <li className="flex items-center">

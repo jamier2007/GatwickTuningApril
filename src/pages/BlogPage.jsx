@@ -5,25 +5,68 @@ import { Helmet } from 'react-helmet-async';
 const BlogPage = () => {
   const blogPosts = [
     {
-      title: "Understanding ECU Remapping",
-      excerpt: "Learn about the benefits and process of ECU remapping for your vehicle.",
-      date: "May 15, 2023",
-      category: "Technical",
-      readTime: "5 min read"
+      title: "Unlocking Your Vehicle's Potential: The Benefits of DPF, EGR, and AdBlue Deletes",
+      excerpt: "Discover how professional modifications can enhance your vehicle's performance, improve fuel efficiency, and reduce maintenance costs.",
+      date: "December 29, 2023",
+      category: "Performance",
+      readTime: "7 min read",
+      slug: "unlocking-vehicle-potential"
     },
     {
-      title: "Stage 1 vs Stage 2 Tuning",
-      excerpt: "Discover the differences between Stage 1 and Stage 2 tuning and which is right for you.",
-      date: "May 10, 2023",
-      category: "Guides",
-      readTime: "4 min read"
+      title: "Real-Life Experiences: How DPF, EGR, and AdBlue Deletes Transformed Vehicles",
+      excerpt: "Read real customer success stories and see how professional modifications have improved vehicle performance and reliability.",
+      date: "December 29, 2023",
+      category: "Case Studies",
+      readTime: "6 min read",
+      slug: "real-life-experiences"
     },
     {
-      title: "Common Myths About Car Tuning",
-      excerpt: "We debunk common myths and misconceptions about car tuning and ECU remapping.",
-      date: "May 5, 2023",
+      title: "The Ultimate Guide to DPF, EGR, and AdBlue Systems",
+      excerpt: "Everything you need to know about emission control systems and their impact on your vehicle's performance.",
+      date: "December 29, 2023",
+      category: "Technical Guide",
+      readTime: "8 min read",
+      slug: "ultimate-guide"
+    },
+    {
+      title: "Common Diesel Engine Issues and How Professional Tuning Can Help",
+      excerpt: "Understanding common problems in modern diesel engines and how professional tuning can resolve them.",
+      date: "December 29, 2023",
+      category: "Troubleshooting",
+      readTime: "6 min read",
+      slug: "common-diesel-issues"
+    },
+    {
+      title: "The Complete Guide to Performance Tuning",
+      excerpt: "Learn about the various aspects of professional performance tuning and how it can maximize your vehicle's potential.",
+      date: "December 29, 2023",
+      category: "Performance",
+      readTime: "7 min read",
+      slug: "performance-tuning-guide"
+    },
+    {
+      title: "Debunking Common Myths About Vehicle Tuning",
+      excerpt: "Separating fact from fiction - learn the truth about vehicle tuning and modifications.",
+      date: "December 29, 2023",
       category: "Education",
-      readTime: "6 min read"
+      readTime: "5 min read",
+      slug: "myths-and-facts"
+    },
+    {
+      title: "Essential Maintenance Tips for Modified Vehicles",
+      excerpt: "Keep your modified vehicle performing at its best with these essential maintenance tips and best practices.",
+      date: "December 29, 2023",
+      category: "Maintenance",
+      readTime: "6 min read",
+      slug: "maintenance-tips"
+    },
+    {
+      title: "How to Choose the Right Vehicle Tuning Service",
+      excerpt: "A comprehensive guide to selecting a professional tuning service for optimal results.",
+      date: "December 29, 2023",
+      category: "Guides",
+      readTime: "6 min read",
+      slug: "choosing-tuning-service"
     }
   ];
 
@@ -64,7 +107,10 @@ const BlogPage = () => {
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">{post.title}</h2>
                     <p className="text-gray-600 mb-6">{post.excerpt}</p>
-                    <Link to="#" className="text-secondary hover:text-blue-600 font-medium">
+                    <Link 
+                      to={`/blog/${post.slug}`} 
+                      className="text-secondary hover:text-blue-600 font-medium"
+                    >
                       Read More →
                     </Link>
                   </div>

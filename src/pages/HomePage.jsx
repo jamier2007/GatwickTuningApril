@@ -1,8 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import TuningGauge from '../components/TuningGauge';
 import { Helmet } from 'react-helmet-async';
+import { Car, Search } from 'lucide-react';
+
+// Configure axios
+const api = axios.create({
+  baseURL: '/api',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+});
+
+// Add response interceptor for better error handling
+api.interceptors.response.use(
+  response => response,
+  error => {
+    console.error('API Error:', error);
+    console.error('Response data:', error.response?.data);
+    console.error('Response status:', error.response?.status);
+    console.error('Response headers:', error.response?.headers);
+    
+    if (error.code === 'ERR_NETWORK') {
+      console.error('Network error details:', error);
+      throw new Error('Unable to connect to the server. Please try our manual lookup option.');
+    }
+    
+    if (error.response?.status === 404) {
+      throw new Error('Vehicle not found. Please check the registration number or try our manual lookup option.');
+    }
+
+    if (error.response?.status === 403) {
+      throw new Error('Access denied. Please try again later or use our manual lookup option.');
+    }
+    
+    throw new Error(error.response?.data?.detail || error.message || 'An unexpected error occurred.');
+  }
+);
 
 const HomePage = () => {
   const [lookupMethod, setLookupMethod] = useState('reg'); // 'reg' or 'manual'
@@ -15,6 +51,7 @@ const HomePage = () => {
   const [vehicleDetails, setVehicleDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedServices, setSelectedServices] = useState([]);
 
   // Example data - replace with your actual data
   const makes = ['BMW', 'Audi', 'Mercedes', 'Volkswagen', 'Ford', 'Vauxhall'];
@@ -39,30 +76,31 @@ const HomePage = () => {
     try {
       const cleanReg = regNumber.trim().toUpperCase();
       
-      // Test case for AB12CBE
-      if (cleanReg === 'AB12CBE') {
+      // Test registration case
+      if (cleanReg === 'TEST') {
         setVehicleDetails({
           make: 'BMW',
-          model: '320d',
-          year: '2019',
+          model: '330d',
+          year: '2020',
           fuel: 'Diesel',
-          engine: '2.0L',
-          ecu: 'Bosch EDC17',
+          engine: '3.0L',
+          ecu: 'Bosch',
           variant: 'M Sport',
           transmission: 'Automatic',
           potential: {
-            basePower: 190,
-            targetPower: 240,
-            baseTorque: 400,
-            targetTorque: 480
+            basePower: 265,
+            targetPower: 320,
+            baseTorque: 580,
+            targetTorque: 680
           }
         });
         setIsLoading(false);
         return;
       }
 
-      // Make the API call for all other registrations
-      const response = await axios.get(`/api/${cleanReg}`);
+      console.log('Making API request for registration:', cleanReg);
+      
+      const response = await api.get(`/${cleanReg}`);
       console.log('API Response:', response.data);
       
       if (response.data.status === 'success') {
@@ -77,29 +115,27 @@ const HomePage = () => {
           make: performance_reg_data?.brand || vehicle_data_only?.make || 'Unknown',
           model: performance_reg_data?.model || vehicle_data_only?.model || 'Unknown',
           year: performance_reg_data?.year || vehicle_data_only?.year || 'Unknown',
-          fuel: performance_reg_data?.specs?.fuel || vehicle_data_only?.fuel_type || 'Unknown',
-          engine: performance_reg_data?.specs?.engine || `${vehicle_data_only?.engine_capacity || ''} ${vehicle_data_only?.fuel_type || ''}` || 'Unknown',
+          fuel: performance_reg_data?.specs?.fuel || vehicle_data_only?.fuel || 'Unknown',
+          engine: performance_reg_data?.specs?.engine || vehicle_data_only?.cc || 'Unknown',
           ecu: performance_reg_data?.specs?.ecu || 'Not Available',
-          variant: performance_reg_data?.variant || vehicle_data_only?.model_variant || 'Standard',
+          variant: performance_reg_data?.variant || 'Standard',
           transmission: vehicle_data_only?.transmission || 'Unknown',
           potential: {
-            basePower: parseInt(performance_reg_data?.performance_figures?.original?.power) || parseInt(vehicle_data_only?.power) || 0,
-            targetPower: parseInt(performance_reg_data?.performance_figures?.modified?.power) || Math.round(parseInt(vehicle_data_only?.power) * 1.25) || 0,
-            baseTorque: parseInt(performance_reg_data?.performance_figures?.original?.torque) || parseInt(vehicle_data_only?.torque) || 0,
-            targetTorque: parseInt(performance_reg_data?.performance_figures?.modified?.torque) || Math.round(parseInt(vehicle_data_only?.torque) * 1.25) || 0
+            basePower: parseInt(performance_reg_data?.performance_figures?.original?.power) || 0,
+            targetPower: parseInt(performance_reg_data?.performance_figures?.modified?.power) || 0,
+            baseTorque: parseInt(performance_reg_data?.performance_figures?.original?.torque) || 0,
+            targetTorque: parseInt(performance_reg_data?.performance_figures?.modified?.torque) || 0
           }
         });
       } else {
-        throw new Error(response.data.message || 'Failed to fetch vehicle data');
+        throw new Error('Failed to fetch vehicle data');
       }
     } catch (err) {
       console.error('Error looking up registration:', err);
       if (err.response?.status === 404) {
-        setError('Vehicle not found. Please check the registration number.');
-      } else if (err.response?.status === 429) {
-        setError('Too many requests. Please try again in a few minutes.');
+        setError(`Vehicle not found: ${regNumber}. Please check the registration number or try our manual lookup option.`);
       } else if (err.code === 'ERR_NETWORK') {
-        setError('Network error. Please check your connection.');
+        setError('Network error. Please check your connection and try again.');
       } else {
         setError(err.message || 'Unable to lookup vehicle details. Please try again later.');
       }
@@ -138,166 +174,160 @@ const HomePage = () => {
         </section>
 
         {/* Vehicle Selection Section */}
-        <section className="py-12 bg-white" aria-labelledby="tuning-potential-heading">
+        <section className="py-12 bg-[#1C2331]" aria-labelledby="tuning-potential-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-              <div className="px-6 py-8">
-                <div className="text-center space-y-4 mb-8">
-                  <h2 id="tuning-potential-heading" className="text-2xl font-bold text-gray-900">
-                    Check Your Vehicle's Tuning Potential
+            <div className="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+              <div className="pt-6 flex flex-col items-center gap-6 p-8">
+                <div className="rounded-full bg-[#3B82F6] p-4">
+                  <Car className="w-8 h-8 text-white" />
+                </div>
+                
+                <div className="text-center space-y-2">
+                  <h2 id="tuning-potential-heading" className="text-2xl md:text-3xl font-bold text-[#1C2331]">
+                    Check Your Vehicle's Power
                   </h2>
+                  <p className="text-gray-500 text-sm md:text-base">
+                    Discover your vehicle's performance potential
+                  </p>
                 </div>
 
-                {/* Toggle between lookup methods */}
-                <div className="flex justify-center space-x-4 mb-8" role="group" aria-label="Vehicle lookup method">
-                  <button
-                    onClick={() => setLookupMethod('reg')}
-                    aria-pressed={lookupMethod === 'reg'}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200
-                      ${lookupMethod === 'reg'
-                        ? 'bg-primary text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                  >
-                    Registration Lookup
-                  </button>
-                  <button
-                    onClick={() => setLookupMethod('manual')}
-                    aria-pressed={lookupMethod === 'manual'}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200
-                      ${lookupMethod === 'manual'
-                        ? 'bg-primary text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                  >
-                    Manual Selection
-                  </button>
-                </div>
-
-                {lookupMethod === 'reg' ? (
-                  // Registration lookup form
-                  <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); handleRegLookup(); }}>
-                    <div>
-                      <label htmlFor="registration" className="block text-sm font-medium text-gray-700">
-                        Vehicle Registration
-                      </label>
-                      <div className="mt-1 flex rounded-md shadow-sm">
+                <div className="w-full max-w-md space-y-4">
+                  {lookupMethod === 'reg' ? (
+                    // Registration lookup form
+                    <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleRegLookup(); }}>
+                      <div className="relative">
+                        <div className="absolute left-0 top-0 bottom-0 flex items-center justify-center w-14 bg-[#3B82F6] rounded-l-lg border-r border-[#2563EB]">
+                          <span className="text-white font-semibold text-sm">GB</span>
+                        </div>
                         <input
                           type="text"
-                          name="registration"
                           id="registration"
                           value={regNumber}
                           onChange={(e) => setRegNumber(e.target.value.toUpperCase())}
-                          className="flex-1 min-w-0 block w-full px-3 py-2 rounded-md border-gray-300 focus:ring-primary focus:border-primary text-lg uppercase"
+                          className="pl-16 h-14 w-full text-lg font-bold tracking-wider text-center uppercase bg-yellow-50 border-2 border-yellow-100 rounded-lg focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent"
                           placeholder="Enter registration"
                           disabled={isLoading}
                           aria-label="Enter your vehicle registration number"
                           aria-describedby="reg-error"
                         />
-                        <button
-                          type="submit"
-                          disabled={isLoading}
-                          className={`ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
-                            ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-primary/90'} 
-                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary`}
-                          aria-label={isLoading ? 'Looking up registration number' : 'Look up registration number'}
-                        >
-                          {isLoading ? (
-                            <span className="flex items-center" role="status">
-                              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12 11.955 11.955 0 01-8 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                              </svg>
-                              Looking up...
-                            </span>
-                          ) : 'Look Up'}
-                        </button>
                       </div>
+
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] text-white rounded-lg flex items-center justify-center"
+                      >
+                        {isLoading ? (
+                          <span className="flex items-center" role="status">
+                            <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12 11.955 11.955 0 01-8 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            Looking up...
+                          </span>
+                        ) : (
+                          <>
+                            <Search className="mr-2 h-5 w-5" />
+                            Check Performance
+                          </>
+                        )}
+                      </button>
+
                       {error && (
-                        <p id="reg-error" className="mt-2 text-sm text-red-600" role="alert">
+                        <p id="reg-error" className="mt-2 text-sm text-red-600 text-center" role="alert">
                           {error}
                         </p>
                       )}
-                    </div>
-                  </form>
-                ) : (
-                  // Manual selection form
-                  <form className="space-y-6">
-                    <div>
-                      <label htmlFor="make" className="block text-sm font-medium text-gray-700">
-                        Make
-                      </label>
-                      <select
-                        id="make"
-                        value={selectedMake}
-                        onChange={(e) => setSelectedMake(e.target.value)}
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-md"
-                        aria-label="Select vehicle make"
-                      >
-                        <option value="">Select Make</option>
-                        {makes.map((make) => (
-                          <option key={make} value={make}>{make}</option>
-                        ))}
-                      </select>
-                    </div>
 
-                    <div>
-                      <label htmlFor="model" className="block text-sm font-medium text-gray-700">
-                        Model
-                      </label>
-                      <select
-                        id="model"
-                        value={selectedModel}
-                        onChange={(e) => setSelectedModel(e.target.value)}
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-md"
-                        disabled={!selectedMake}
+                      <button
+                        type="button"
+                        onClick={() => setLookupMethod('manual')}
+                        className="w-full text-[#3B82F6] hover:text-[#2563EB] hover:bg-gray-50 font-medium py-2 rounded-lg"
                       >
-                        <option value="">Select Model</option>
-                        {selectedMake && engines[selectedMake] && 
-                          Object.keys(engines[selectedMake]).map((model) => (
-                            <option key={model} value={model}>{model}</option>
+                        Don't have your registration? Click here
+                      </button>
+                    </form>
+                  ) : (
+                    // Manual selection form
+                    <form className="space-y-4">
+                      <div>
+                        <label htmlFor="make" className="block text-sm font-medium text-gray-700">
+                          Make
+                        </label>
+                        <select
+                          id="make"
+                          value={selectedMake}
+                          onChange={(e) => setSelectedMake(e.target.value)}
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#3B82F6] focus:border-[#3B82F6] rounded-md"
+                          aria-label="Select vehicle make"
+                        >
+                          <option value="">Select Make</option>
+                          {makes.map((make) => (
+                            <option key={make} value={make}>{make}</option>
                           ))}
-                      </select>
-                    </div>
+                        </select>
+                      </div>
 
-                    <div>
-                      <label htmlFor="fuel" className="block text-sm font-medium text-gray-700">
-                        Fuel Type
-                      </label>
-                      <select
-                        id="fuel"
-                        value={selectedFuel}
-                        onChange={(e) => setSelectedFuel(e.target.value)}
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-md"
-                      >
-                        <option value="">Select Fuel Type</option>
-                        {fuels.map((fuel) => (
-                          <option key={fuel} value={fuel}>{fuel}</option>
-                        ))}
-                      </select>
-                    </div>
+                      <div>
+                        <label htmlFor="model" className="block text-sm font-medium text-gray-700">
+                          Model
+                        </label>
+                        <select
+                          id="model"
+                          value={selectedModel}
+                          onChange={(e) => setSelectedModel(e.target.value)}
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#3B82F6] focus:border-[#3B82F6] rounded-md"
+                          disabled={!selectedMake}
+                        >
+                          <option value="">Select Model</option>
+                          {selectedMake && engines[selectedMake] && 
+                            Object.keys(engines[selectedMake]).map((model) => (
+                              <option key={model} value={model}>{model}</option>
+                            ))}
+                        </select>
+                      </div>
 
-                    <div>
-                      <label htmlFor="engine" className="block text-sm font-medium text-gray-700">
-                        Engine
-                      </label>
-                      <select
-                        id="engine"
-                        value={selectedEngine}
-                        onChange={(e) => setSelectedEngine(e.target.value)}
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary rounded-md"
-                        disabled={!selectedMake || !selectedModel}
-                      >
-                        <option value="">Select Engine</option>
-                        {selectedMake && selectedModel && engines[selectedMake][selectedModel]?.map((engine) => (
-                          <option key={engine} value={engine}>{engine}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </form>
-                )}
+                      <div>
+                        <label htmlFor="fuel" className="block text-sm font-medium text-gray-700">
+                          Fuel Type
+                        </label>
+                        <select
+                          id="fuel"
+                          value={selectedFuel}
+                          onChange={(e) => setSelectedFuel(e.target.value)}
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#3B82F6] focus:border-[#3B82F6] rounded-md"
+                        >
+                          <option value="">Select Fuel Type</option>
+                          {fuels.map((fuel) => (
+                            <option key={fuel} value={fuel}>{fuel}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label htmlFor="engine" className="block text-sm font-medium text-gray-700">
+                          Engine
+                        </label>
+                        <select
+                          id="engine"
+                          value={selectedEngine}
+                          onChange={(e) => setSelectedEngine(e.target.value)}
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#3B82F6] focus:border-[#3B82F6] rounded-md"
+                          disabled={!selectedMake || !selectedModel}
+                        >
+                          <option value="">Select Engine</option>
+                          {selectedMake && selectedModel && engines[selectedMake][selectedModel]?.map((engine) => (
+                            <option key={engine} value={engine}>{engine}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </form>
+                  )}
+                </div>
 
                 {vehicleDetails && (
-                  <section className="mt-8" aria-labelledby="vehicle-details-heading">
-                    <h3 id="vehicle-details-heading" className="text-xl font-semibold text-gray-900 mb-4">Vehicle Details</h3>
+                  <div className="w-full max-w-md mt-8">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">Vehicle Details</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <p className="text-sm text-gray-500">Make</p>
@@ -345,15 +375,148 @@ const HomePage = () => {
                       </div>
                     </div>
 
+                    <div className="mt-8">
+                      <h4 className="text-lg font-medium text-gray-900 mb-4">Select Required Services</h4>
+                      <div className="space-y-4">
+                        {/* Tuning Options */}
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="stage1"
+                            checked={selectedServices.includes('stage1')}
+                            onChange={(e) => {
+                              const newServices = selectedServices.filter(s => s !== 'stage1' && s !== 'stage2');
+                              if (e.target.checked) {
+                                newServices.push('stage1');
+                              }
+                              setSelectedServices(newServices);
+                            }}
+                            className="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent"
+                          />
+                          <label htmlFor="stage1" className="ml-3">
+                            <span className="block text-sm font-medium text-gray-900">Stage 1 Tuning</span>
+                            <span className="block text-sm text-gray-500">15-30% Power Increase - £280</span>
+                          </label>
+                        </div>
+
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="stage2"
+                            checked={selectedServices.includes('stage2')}
+                            onChange={(e) => {
+                              const newServices = selectedServices.filter(s => s !== 'stage1' && s !== 'stage2');
+                              if (e.target.checked) {
+                                newServices.push('stage2');
+                              }
+                              setSelectedServices(newServices);
+                            }}
+                            className="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent"
+                          />
+                          <label htmlFor="stage2" className="ml-3">
+                            <span className="block text-sm font-medium text-gray-900">Stage 2 Tuning</span>
+                            <span className="block text-sm text-gray-500">30-45% Power Increase - £350</span>
+                          </label>
+                        </div>
+
+                        {/* Delete Options */}
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="egrDpf"
+                            checked={selectedServices.includes('egrDpf')}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedServices(prev => [...prev, 'egrDpf']);
+                              } else {
+                                setSelectedServices(prev => prev.filter(s => s !== 'egrDpf'));
+                              }
+                            }}
+                            className="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent"
+                          />
+                          <label htmlFor="egrDpf" className="ml-3">
+                            <span className="block text-sm font-medium text-gray-900">EGR/DPF Solutions</span>
+                            <span className="block text-sm text-gray-500">Off-road performance solutions - £250</span>
+                          </label>
+                        </div>
+
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id="adblue"
+                            checked={selectedServices.includes('adblue')}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedServices(prev => [...prev, 'adblue']);
+                              } else {
+                                setSelectedServices(prev => prev.filter(s => s !== 'adblue'));
+                              }
+                            }}
+                            className="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent"
+                          />
+                          <label htmlFor="adblue" className="ml-3">
+                            <span className="block text-sm font-medium text-gray-900">AdBlue Delete</span>
+                            <span className="block text-sm text-gray-500">Professional AdBlue system solutions - £350</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* Total Price */}
+                      <div className="mt-6 border-t border-gray-200 pt-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-medium text-gray-900">Total Price:</span>
+                          <span className="text-xl font-bold text-accent">
+                            £{(() => {
+                              const prices = {
+                                stage1: 280,
+                                stage2: 350,
+                                egrDpf: 250,
+                                adblue: 350
+                              };
+                              
+                              if (selectedServices.length === 0) return 0;
+                              
+                              // Find the most expensive service
+                              const basePrice = Math.max(...selectedServices.map(service => prices[service]));
+                              
+                              // Add £50 for each additional service
+                              const additionalCost = (selectedServices.length - 1) * 50;
+                              
+                              return basePrice + additionalCost;
+                            })()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="mt-6">
                       <Link
                         to="/contact"
-                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                        state={{
+                          vehicleDetails,
+                          selectedServices,
+                          totalPrice: (() => {
+                            const prices = {
+                              stage1: 280,
+                              stage2: 350,
+                              egrDpf: 250,
+                              adblue: 350
+                            };
+                            
+                            if (selectedServices.length === 0) return 0;
+                            
+                            const basePrice = Math.max(...selectedServices.map(service => prices[service]));
+                            const additionalCost = (selectedServices.length - 1) * 50;
+                            
+                            return basePrice + additionalCost;
+                          })()
+                        }}
+                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#3B82F6] hover:bg-[#2563EB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B82F6]"
                       >
                         Book Your Tuning Session
                       </Link>
                     </div>
-                  </section>
+                  </div>
                 )}
               </div>
             </div>

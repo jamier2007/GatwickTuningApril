@@ -12,6 +12,7 @@ const AboutPage = React.lazy(() => import('./pages/AboutPage'));
 const PricingPage = React.lazy(() => import('./pages/PricingPage'));
 const BlogPage = React.lazy(() => import('./pages/BlogPage'));
 const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const BlogPost = React.lazy(() => import('./components/BlogPost'));
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </Suspense>

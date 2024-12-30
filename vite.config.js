@@ -13,24 +13,25 @@ export default defineConfig({
       },
     }),
   ],
+  optimizeDeps: {
+    exclude: ['*.md'],
+  },
+  assetsInclude: ['*.md'],
   server: {
     host: '0.0.0.0',
     port: 3000,
     strictPort: true,
-    hmr: process.env.REPLIT_ENVIRONMENT 
-      ? {
-          clientPort: 443,
-          host: process.env.REPLIT_URL
-        }
-      : {
-          port: 3000
-        },
     proxy: {
       '/api': {
         target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api\//, '')
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+          'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+        }
       }
     }
   },

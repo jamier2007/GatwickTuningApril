@@ -4,27 +4,42 @@ import { useInView } from "react-intersection-observer";
 const TuningGauge = ({ label, beforeValue, afterValue, unit }) => {
   const [currentAfterValue, setCurrentAfterValue] = useState(beforeValue);
   const [ref, inView] = useInView({
-    triggerOnce: true,
+    triggerOnce: false,
     threshold: 0.1,
   });
 
   useEffect(() => {
+    let animationFrame;
+    let startTime;
+
     if (inView) {
       setCurrentAfterValue(beforeValue);
       const animationDuration = 2500;
-      const startTime = Date.now();
+      startTime = Date.now();
       
       const animate = () => {
         const now = Date.now();
         const progress = Math.min((now - startTime) / animationDuration, 1);
-        setCurrentAfterValue(beforeValue + progress * (afterValue - beforeValue));
+        
         if (progress < 1) {
-          requestAnimationFrame(animate);
+          setCurrentAfterValue(beforeValue + progress * (afterValue - beforeValue));
+          animationFrame = requestAnimationFrame(animate);
+        } else {
+          setCurrentAfterValue(afterValue);
         }
       };
-      
-      requestAnimationFrame(animate);
+
+      animationFrame = requestAnimationFrame(animate);
+    } else {
+      // Reset when out of view
+      setCurrentAfterValue(beforeValue);
     }
+
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
   }, [inView, beforeValue, afterValue]);
 
   const percentage = ((afterValue - beforeValue) / beforeValue) * 100;
