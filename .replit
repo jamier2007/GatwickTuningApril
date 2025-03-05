@@ -36,3 +36,18 @@ build = ["sh", "-c", "npm run build"]
 
 [onBoot]
 command = "npx vite build"
+
+[workflows]
+runButton = "Run"
+
+[[workflows.workflow]]
+name = "Run"
+author = 38231062
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash run.sh"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
