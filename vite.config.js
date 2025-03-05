@@ -15,7 +15,9 @@ export default defineConfig({
       '.replit.dev',
       '.repl.co',
       '.repl.run',
-      '.kirk.replit.dev'
+      '.kirk.replit.dev',
+      'gatwicktuning.replit.app',
+      'gatwicktuning.co.uk'
     ],
     proxy: {
       '/api': {
@@ -39,7 +41,9 @@ export default defineConfig({
       '.replit.dev',
       '.repl.co',
       '.repl.run',
-      '.kirk.replit.dev'
+      '.kirk.replit.dev',
+      'gatwicktuning.replit.app',
+      'gatwicktuning.co.uk'
     ]
   },
   build: {
