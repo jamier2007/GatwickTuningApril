@@ -1,0 +1,7 @@
+#!/usr/bin/env run
+# Runfile for Gatwick Tuning website
+
+command:start
+  #!/usr/bin/env bash
+  echo "Starting Gatwick Tuning website..."
+  node index.cjs 

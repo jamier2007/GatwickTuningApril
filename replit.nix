@@ -6,6 +6,7 @@
     channels.nixpkgs.npm = "latest";
     channels.nixpkgs.yarn = "latest";
     channels.nixpkgs.nodePackages.vite = "latest";
+    channels.nixpkgs.run = "latest";
   };
 
   env = {

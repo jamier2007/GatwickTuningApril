@@ -1,0 +1,14 @@
+# TOML configuration for Replit
+run = "bash run.sh"
+entrypoint = "index.cjs"
+hidden = [".config", "package-lock.json"]
+
+[env]
+PATH = "/home/runner/$REPL_SLUG/.config/npm/node_global/bin:/home/runner/$REPL_SLUG/node_modules/.bin"
+XDG_CONFIG_HOME = "/home/runner/$REPL_SLUG/.config"
+npm_config_prefix = "/home/runner/$REPL_SLUG/.config/npm/node_global"
+PORT = "3000"
+HOST = "0.0.0.0"
+
+[nix]
+channel = "stable-22_11" 
