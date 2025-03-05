@@ -2,6 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 
+// Check if running on Replit
+const isReplit = process.env.REPL_ID !== undefined;
+
 export default defineConfig({
   plugins: [
     react(),
@@ -35,9 +38,14 @@ export default defineConfig({
       }
     }
   },
+  preview: {
+    host: '0.0.0.0',
+    port: 3000,
+    strictPort: true,
+  },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: isReplit ? false : true, // Disable sourcemaps on Replit to reduce build size
     rollupOptions: {
       output: {
         manualChunks: {
@@ -45,6 +53,10 @@ export default defineConfig({
           ui: ['@headlessui/react', '@heroicons/react']
         }
       }
-    }
+    },
+    // Reduce chunk size for better performance on Replit
+    chunkSizeWarningLimit: 1000,
+    // Minify for production
+    minify: true,
   }
 });
