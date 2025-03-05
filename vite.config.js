@@ -10,6 +10,13 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000,
+    allowedHosts: [
+      'localhost',
+      '.replit.dev',
+      '.repl.co',
+      '.repl.run',
+      '.kirk.replit.dev'
+    ],
     proxy: {
       '/api': {
         target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
@@ -26,7 +33,14 @@ export default defineConfig({
   },
   preview: {
     host: '0.0.0.0',
-    port: 3000
+    port: 3000,
+    allowedHosts: [
+      'localhost',
+      '.replit.dev',
+      '.repl.co',
+      '.repl.run',
+      '.kirk.replit.dev'
+    ]
   },
   build: {
     outDir: 'dist',
