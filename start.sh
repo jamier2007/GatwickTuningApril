@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Install dependencies
+# Install dependencies using npx
 echo "Installing dependencies..."
-npm install
+npx --yes npm install
 
 # Build the application
 echo "Building the application..."
-npm run build
+npx vite build
 
 # Start the application in preview mode
 echo "Starting the application..."
-npm run preview 
+npx vite preview --host 0.0.0.0 --port 3000 
