@@ -2,21 +2,39 @@
 // This file is used as an entry point for Replit
 // It will start the Vite preview server
 
-const { execSync } = require('child_process');
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
-console.log('Building the application...');
-try {
-  execSync('npm run build', { stdio: 'inherit' });
+const execAsync = promisify(exec);
+
+async function runCommand(command) {
+  try {
+    const { stdout, stderr } = await execAsync(command, { stdio: 'inherit' });
+    if (stdout) console.log(stdout);
+    if (stderr) console.error(stderr);
+    return true;
+  } catch (error) {
+    console.error(`Error executing ${command}:`, error.message);
+    return false;
+  }
+}
+
+async function main() {
+  console.log('Building the application...');
+  const buildSuccess = await runCommand('npm run build');
+  
+  if (!buildSuccess) {
+    console.error('Build failed. Exiting.');
+    process.exit(1);
+  }
+  
   console.log('Build completed successfully.');
-} catch (error) {
-  console.error('Build failed:', error);
-  process.exit(1);
+  console.log('Starting the preview server...');
+  
+  await runCommand('npm run preview');
 }
 
-console.log('Starting the preview server...');
-try {
-  execSync('npx vite preview --host 0.0.0.0 --port 3000', { stdio: 'inherit' });
-} catch (error) {
-  console.error('Preview server failed to start:', error);
+main().catch(err => {
+  console.error('Fatal error:', err);
   process.exit(1);
-}
+});
