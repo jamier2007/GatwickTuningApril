@@ -3,27 +3,13 @@ import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 
 // Check if running on Replit
-const isReplit = process.env.REPL_ID !== undefined;
+const isReplit = process.env.REPL_SLUG !== undefined;
 
 export default defineConfig({
-  plugins: [
-    react(),
-    svgr({
-      svgrOptions: {
-        icon: true,
-        svgo: true,
-        replaceAttrValues: { '#000000': 'currentColor' },
-      },
-    }),
-  ],
-  optimizeDeps: {
-    exclude: ['*.md'],
-  },
-  assetsInclude: ['*.md'],
+  plugins: [react(), svgr()],
   server: {
     host: '0.0.0.0',
     port: 3000,
-    strictPort: true,
     proxy: {
       '/api': {
         target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
@@ -40,8 +26,7 @@ export default defineConfig({
   },
   preview: {
     host: '0.0.0.0',
-    port: 3000,
-    strictPort: true,
+    port: 3000
   },
   build: {
     outDir: 'dist',
