@@ -29,9 +29,10 @@ language = "nodejs"
     start = "typescript-language-server --stdio"
 
 [deployment]
-run = ["sh", "-c", "npm run dev"]
+run = ["sh", "-c", "npm run preview"]
 deploymentTarget = "cloudrun"
 ignorePorts = false
+build = ["sh", "-c", "npm run build"]
 
 [onBoot]
 command = "npx vite build"
