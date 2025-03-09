@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
 
 const ContactPage = () => {
   const location = useLocation();
@@ -26,10 +27,47 @@ const ContactPage = () => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('success')) {
       setFormStatus({ submitted: true, error: false });
+      
+      // Send WhatsApp notification
+      sendWhatsAppNotification();
+      
       // Clean up the URL
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
+
+  // Function to send WhatsApp notification via CallMeBot API
+  const sendWhatsAppNotification = async () => {
+    try {
+      const phone = '447922921110';
+      const apiKey = '4542589';
+      
+      // Get the form data from localStorage
+      const storedFormData = JSON.parse(localStorage.getItem('lastFormSubmission')) || formData;
+      
+      // Create notification message
+      const notificationText = `New Booking Request:
+Name: ${storedFormData.name}
+Email: ${storedFormData.email}
+Phone: ${storedFormData.phone}
+Date: ${storedFormData.preferredDate || 'Not specified'}
+Time: ${storedFormData.preferredTime || 'Not specified'}
+Message: ${storedFormData.message ? storedFormData.message.substring(0, 100) + '...' : 'No message'}`;
+      
+      // Encode the message for URL
+      const encodedText = encodeURIComponent(notificationText);
+      
+      // Send the WhatsApp notification
+      await axios.get(`https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodedText}&apikey=${apiKey}`);
+      
+      console.log('WhatsApp notification sent successfully');
+      
+      // Clear the stored form data
+      localStorage.removeItem('lastFormSubmission');
+    } catch (error) {
+      console.error('Error sending WhatsApp notification:', error);
+    }
+  };
 
   // Pre-fill the message with vehicle and service details if available
   useEffect(() => {
@@ -72,6 +110,22 @@ Additional Notes:`;
       ...prev,
       [name]: value
     }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Store form data in localStorage before submission
+      localStorage.setItem('lastFormSubmission', JSON.stringify(formData));
+      
+      // Submit the form programmatically
+      e.target.submit();
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      setFormStatus({ submitted: false, error: true });
+    }
   };
 
   return (
@@ -125,6 +179,7 @@ Additional Notes:`;
                 action="https://formsubmit.co/info@gatwicktuning.co.uk" 
                 method="POST"
                 className="space-y-6"
+                onSubmit={handleSubmit}
               >
                 {/* FormSubmit configuration */}
                 <input type="hidden" name="_subject" value="New Booking Request from Website" />
