@@ -75,7 +75,7 @@ const BlogPage = () => {
       <Helmet>
         <title>Blog | Gatwick Tuning - ECU Remapping Insights & News</title>
         <meta name="description" content="Stay updated with the latest insights about ECU remapping, vehicle tuning, and automotive performance. Expert articles from Gatwick Tuning." />
-        <link rel="canonical" href="https://www.gatwicktuning.com/blog" />
+        <link rel="canonical" href="https://www.gatwicktuning.co.uk/blog" />
       </Helmet>
 
       <main className="pt-20 min-h-screen bg-gray-50">

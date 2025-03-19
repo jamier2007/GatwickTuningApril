@@ -133,7 +133,7 @@ Additional Notes:`;
       <Helmet>
         <title>Contact Us | Book Your Tuning Session | Gatwick Tuning</title>
         <meta name="description" content="Book your professional ECU remapping session with Gatwick Tuning. Contact us for expert vehicle tuning services in Surrey." />
-        <link rel="canonical" href="https://www.gatwicktuning.com/contact" />
+        <link rel="canonical" href="https://www.gatwicktuning.co.uk/contact" />
       </Helmet>
 
       <main className="pt-20 min-h-screen bg-gray-50">

@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://www.gatwicktuning.com/sitemap.xml
+Sitemap: https://www.gatwicktuning.co.uk/sitemap.xml
 
 # Disallow crawling of admin or private areas if they exist
 Disallow: /admin/

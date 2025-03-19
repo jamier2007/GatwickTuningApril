@@ -163,7 +163,7 @@ const BlogPost = () => {
       "@type": "BlogPosting",
       "headline": blogMetadata[slug].title,
       "description": blogMetadata[slug].description,
-      "image": `https://www.gatwicktuning.com${blogMetadata[slug].imageUrl}`,
+      "image": `https://www.gatwicktuning.co.uk${blogMetadata[slug].imageUrl}`,
       "author": {
         "@type": "Organization",
         "name": "Gatwick Tuning"
@@ -173,14 +173,14 @@ const BlogPost = () => {
         "name": "Gatwick Tuning",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.gatwicktuning.com/logo.png"
+          "url": "https://www.gatwicktuning.co.uk/logo.png"
         }
       },
       "datePublished": "2023-12-29",
       "dateModified": "2023-12-29",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": `https://www.gatwicktuning.com/blog/${slug}`
+        "@id": `https://www.gatwicktuning.co.uk/blog/${slug}`
       }
     };
   };

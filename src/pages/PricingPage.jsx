@@ -8,7 +8,7 @@ const PricingPage = () => {
       <Helmet>
         <title>ECU Remapping Prices | Stage 1 & 2 Tuning Costs | Gatwick Tuning</title>
         <meta name="description" content="Competitive ECU remapping prices in Surrey. Stage 1 tuning from £280, Stage 2 from £350. Professional vehicle tuning services with transparent pricing." />
-        <link rel="canonical" href="https://www.gatwicktuning.com/pricing" />
+        <link rel="canonical" href="https://www.gatwicktuning.co.uk/pricing" />
         <meta name="keywords" content="ECU remapping cost, tuning prices Surrey, Stage 1 tuning price, Stage 2 tuning cost, vehicle remapping prices" />
       </Helmet>
 

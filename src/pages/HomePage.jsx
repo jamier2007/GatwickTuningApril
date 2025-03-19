@@ -149,18 +149,18 @@ const HomePage = () => {
       <Helmet>
         <title>Gatwick Tuning | Professional ECU Remapping & Performance Tuning Surrey</title>
         <meta name="description" content="Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions. Free vehicle assessment and consultation." />
-        <link rel="canonical" href="https://www.gatwicktuning.com" />
+        <link rel="canonical" href="https://www.gatwicktuning.co.uk" />
         <meta name="keywords" content="ECU remapping Surrey, car tuning, vehicle performance, engine tuning, Stage 1 tuning, Stage 2 tuning, DPF solutions, diesel tuning, performance upgrades" />
         <meta property="og:title" content="Gatwick Tuning | Professional ECU Remapping & Performance Tuning" />
         <meta property="og:description" content="Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.gatwicktuning.com" />
-        <meta property="og:image" content="https://www.gatwicktuning.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.gatwicktuning.co.uk" />
+        <meta property="og:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
         <meta property="og:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Gatwick Tuning | Professional ECU Remapping & Performance Tuning" />
         <meta name="twitter:description" content="Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions." />
-        <meta name="twitter:image" content="https://www.gatwicktuning.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
         <meta name="twitter:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
         <script type="application/ld+json">
           {`
@@ -169,7 +169,7 @@ const HomePage = () => {
               "@type": "WebPage",
               "name": "Gatwick Tuning - Professional ECU Remapping & Performance Tuning",
               "description": "Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions.",
-              "url": "https://www.gatwicktuning.com",
+              "url": "https://www.gatwicktuning.co.uk",
               "mainEntity": {
                 "@type": "Service",
                 "name": "ECU Remapping",

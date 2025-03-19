@@ -21,7 +21,7 @@ const SEO = ({
   imageAlt = "Gatwick Tuning - Professional ECU Remapping Services",
   schema = null
 }) => {
-  const domain = "https://www.gatwicktuning.com";
+  const domain = "https://www.gatwicktuning.co.uk";
   const url = `${domain}${path}`;
   const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `${domain}${imageUrl}`;
 

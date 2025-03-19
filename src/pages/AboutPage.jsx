@@ -8,7 +8,7 @@ const AboutPage = () => {
       <Helmet>
         <title>About Us | Gatwick Tuning - Professional ECU Remapping Specialists</title>
         <meta name="description" content="Learn about Gatwick Tuning's expertise in ECU remapping and vehicle performance optimization. Over 10 years of experience serving Surrey and surrounding areas." />
-        <link rel="canonical" href="https://www.gatwicktuning.com/about" />
+        <link rel="canonical" href="https://www.gatwicktuning.co.uk/about" />
       </Helmet>
 
       <main className="pt-20 min-h-screen bg-gray-50">

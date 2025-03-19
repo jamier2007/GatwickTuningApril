@@ -8,12 +8,12 @@ const ServicesPage = () => {
       <Helmet>
         <title>ECU Remapping Services | Stage 1 & 2 Tuning in Surrey | Gatwick Tuning</title>
         <meta name="description" content="Professional ECU remapping services in Surrey. Stage 1 & 2 tuning, DPF/EGR solutions, and custom performance maps. Up to 45% power increase. Expert technicians and latest equipment." />
-        <link rel="canonical" href="https://www.gatwicktuning.com/services" />
+        <link rel="canonical" href="https://www.gatwicktuning.co.uk/services" />
         <meta name="keywords" content="ECU remapping Surrey, Stage 1 tuning, Stage 2 tuning, DPF solutions, EGR delete, performance tuning, engine remapping" />
         <meta property="og:title" content="ECU Remapping Services | Gatwick Tuning" />
         <meta property="og:description" content="Professional ECU remapping services in Surrey. Stage 1 & 2 tuning, DPF/EGR solutions, and custom performance maps. Expert vehicle tuning services." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.gatwicktuning.com/services" />
+        <meta property="og:url" content="https://www.gatwicktuning.co.uk/services" />
       </Helmet>
 
       <main className="pt-20 min-h-screen bg-gray-50">
