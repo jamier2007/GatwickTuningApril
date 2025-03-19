@@ -147,19 +147,19 @@ const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>Gatwick Tuning | Professional ECU Remapping & Performance Tuning Surrey</title>
-        <meta name="description" content="Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions. Free vehicle assessment and consultation." />
+        <title>ECU Remapping Surrey & Sussex | Professional Car Tuning Gatwick</title>
+        <meta name="description" content="Expert ECU remapping and car tuning in Surrey & Sussex. Boost power, torque & fuel efficiency. Professional service for all makes. Free consultation available." />
         <link rel="canonical" href="https://www.gatwicktuning.co.uk" />
-        <meta name="keywords" content="ECU remapping Surrey, car tuning, vehicle performance, engine tuning, Stage 1 tuning, Stage 2 tuning, DPF solutions, diesel tuning, performance upgrades" />
-        <meta property="og:title" content="Gatwick Tuning | Professional ECU Remapping & Performance Tuning" />
-        <meta property="og:description" content="Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions." />
+        <meta name="keywords" content="ECU remapping Surrey, ECU remapping Sussex, car tuning, vehicle performance tuning, engine remapping Gatwick, diesel tuning, performance upgrades, fuel efficiency tuning, stage 1 tuning, stage 2 tuning, DPF solutions" />
+        <meta property="og:title" content="ECU Remapping Surrey & Sussex | Professional Car Tuning Gatwick" />
+        <meta property="og:description" content="Expert ECU remapping and car tuning in Surrey & Sussex. Boost power, torque & fuel efficiency. Professional service for all makes." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.gatwicktuning.co.uk" />
         <meta property="og:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
         <meta property="og:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Gatwick Tuning | Professional ECU Remapping & Performance Tuning" />
-        <meta name="twitter:description" content="Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions." />
+        <meta name="twitter:title" content="ECU Remapping Surrey & Sussex | Professional Car Tuning Gatwick" />
+        <meta name="twitter:description" content="Expert ECU remapping and car tuning in Surrey & Sussex. Boost power, torque & fuel efficiency. Professional service for all makes." />
         <meta name="twitter:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
         <meta name="twitter:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
         <script type="application/ld+json">
@@ -167,8 +167,8 @@ const HomePage = () => {
             {
               "@context": "https://schema.org",
               "@type": "WebPage",
-              "name": "Gatwick Tuning - Professional ECU Remapping & Performance Tuning",
-              "description": "Expert ECU remapping and vehicle tuning services in Surrey. Boost your vehicle's performance with our professional tuning solutions.",
+              "name": "ECU Remapping Surrey & Sussex | Professional Car Tuning Gatwick",
+              "description": "Expert ECU remapping and car tuning in Surrey & Sussex. Boost power, torque & fuel efficiency. Professional service for all makes.",
               "url": "https://www.gatwicktuning.co.uk",
               "mainEntity": {
                 "@type": "Service",
@@ -177,7 +177,7 @@ const HomePage = () => {
                 "provider": {
                   "@type": "AutoRepair",
                   "name": "Gatwick Tuning",
-                  "areaServed": "Surrey"
+                  "areaServed": ["Surrey", "Sussex"]
                 }
               }
             }
@@ -192,16 +192,24 @@ const HomePage = () => {
             <div className="text-center">
               <h1 id="hero-heading" className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
                 <span className="block">Expert ECU Remapping</span>
-                <span className="block text-accent">in Surrey</span>
+                <span className="block text-accent">in Surrey & Sussex</span>
               </h1>
               <p className="mt-3 max-w-md mx-auto text-base text-gray-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
                 Unlock Your Vehicle's True Potential with Professional ECU Tuning Services
               </p>
+              <div className="mt-8 flex justify-center gap-4">
+                <Link to="/services" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent hover:bg-accent-dark">
+                  Our Services
+                </Link>
+                <Link to="/contact" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary-dark">
+                  Contact Us
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Vehicle Selection Section */}
+        {/* Vehicle Performance Check Section */}
         <section className="py-12 bg-[#1C2331]" aria-labelledby="tuning-potential-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
@@ -212,10 +220,10 @@ const HomePage = () => {
                 
                 <div className="text-center space-y-2">
                   <h2 id="tuning-potential-heading" className="text-2xl md:text-3xl font-bold text-[#1C2331]">
-                    Check Your Vehicle's Power
+                    Check Your Vehicle's Power Potential
                   </h2>
                   <p className="text-gray-500 text-sm md:text-base">
-                    Discover your vehicle's performance potential
+                    Discover how much power and torque your vehicle can achieve with our professional ECU remapping services
                   </p>
                 </div>
 
@@ -551,108 +559,91 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-12 bg-gray-50" aria-labelledby="features-heading">
+        {/* Benefits Section */}
+        <section className="py-16 bg-white" aria-labelledby="benefits-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="lg:text-centre">
-              <h2 id="features-heading" className="text-base text-secondary font-semibold tracking-wide uppercase">Why Choose Us</h2>
-              <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Professional Tuning Services
+            <div className="text-center">
+              <h2 id="benefits-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Why Choose Gatwick Tuning?
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                Experience the difference with our professional ECU remapping services
               </p>
             </div>
 
-            <div className="mt-10">
-              <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-                {/* Performance Feature */}
-                <div className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary text-white">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Enhanced Performance</p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    Boost your vehicle's power and torque with our professional ECU remapping services.
-                  </dd>
-                </div>
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Increased Power & Torque</h3>
+                <p className="mt-2 text-gray-500">
+                  Unlock your vehicle's true potential with optimized engine performance and enhanced power delivery.
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Better Fuel Efficiency</h3>
+                <p className="mt-2 text-gray-500">
+                  Achieve improved fuel economy while maintaining optimal performance with our advanced tuning solutions.
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Professional Service</h3>
+                <p className="mt-2 text-gray-500">
+                  Expert technicians with years of experience in ECU remapping and vehicle performance tuning.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                {/* Fuel Efficiency Feature */}
-                <div className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary text-white">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 9a2 2 0 10-4 0v5a2 2 0 01-2 2h6m-6-4h4m8 0a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                      </svg>
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Improved Fuel Economy</p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    Optimise your vehicle's fuel efficiency while maintaining performance.
-                  </dd>
-                </div>
+        {/* Services Overview Section */}
+        <section className="py-16 bg-gray-50" aria-labelledby="services-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="services-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Our Tuning Services
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                Professional ECU remapping solutions for all vehicle types across Surrey & Sussex
+              </p>
+            </div>
 
-                {/* Expert Service Feature */}
-                <div className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary text-white">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 014 12 11.955 11.955 0 01-8 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                      </svg>
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Expert Technicians</p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    Our certified professionals ensure safe and reliable tuning solutions.
-                  </dd>
-                </div>
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Stage 1 Tuning</h3>
+                <p className="mt-2 text-gray-500">
+                  Optimize your engine's performance with our Stage 1 ECU remapping service, perfect for daily drivers.
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Stage 2 Tuning</h3>
+                <p className="mt-2 text-gray-500">
+                  Enhanced performance tuning with hardware modifications for maximum power gains.
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">DPF Solutions</h3>
+                <p className="mt-2 text-gray-500">
+                  Professional DPF cleaning and maintenance services to keep your diesel engine running efficiently.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                {/* Custom Solutions Feature */}
-                <div className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary text-white">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-                      </svg>
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Customised Solutions</p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    Tailored tuning solutions for your specific vehicle and requirements.
-                  </dd>
-                </div>
-
-                {/* Modern Equipment Feature */}
-                <div className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary text-white">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                      </svg>
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">State-of-the-Art Equipment</p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    Using the latest diagnostic and tuning technology for optimal results.
-                  </dd>
-                </div>
-
-                {/* Support Feature */}
-                <div className="relative">
-                  <dt>
-                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-secondary text-white">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                      </svg>
-                    </div>
-                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Ongoing Support</p>
-                  </dt>
-                  <dd className="mt-2 ml-16 text-base text-gray-500">
-                    Comprehensive after-service support and satisfaction guarantee.
-                  </dd>
-                </div>
-              </dl>
+        {/* CTA Section */}
+        <section className="py-16 bg-primary" aria-labelledby="cta-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="cta-heading" className="text-3xl font-extrabold text-white sm:text-4xl">
+                Ready to Transform Your Vehicle?
+              </h2>
+              <p className="mt-4 text-lg text-gray-300">
+                Contact us today for a free consultation and discover your vehicle's true potential
+              </p>
+              <div className="mt-8">
+                <Link to="/contact" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-white hover:bg-gray-50">
+                  Get Started
+                </Link>
+              </div>
             </div>
           </div>
         </section>

@@ -6,9 +6,40 @@ const AboutPage = () => {
   return (
     <>
       <Helmet>
-        <title>About Us | Gatwick Tuning - Professional ECU Remapping Specialists</title>
-        <meta name="description" content="Learn about Gatwick Tuning's expertise in ECU remapping and vehicle performance optimization. Over 10 years of experience serving Surrey and surrounding areas." />
+        <title>About Gatwick Tuning | Expert ECU Remapping Surrey & Sussex</title>
+        <meta name="description" content="Gatwick Tuning - Leading ECU remapping specialists in Surrey & Sussex. 10+ years experience, certified technicians, and state-of-the-art equipment. Free consultation available." />
         <link rel="canonical" href="https://www.gatwicktuning.co.uk/about" />
+        <meta name="keywords" content="Gatwick Tuning about, ECU remapping experts Surrey, ECU remapping Sussex, certified car tuning, professional vehicle tuning, performance specialists" />
+        <meta property="og:title" content="About Gatwick Tuning | Expert ECU Remapping Surrey & Sussex" />
+        <meta property="og:description" content="Gatwick Tuning - Leading ECU remapping specialists in Surrey & Sussex. 10+ years experience, certified technicians, and state-of-the-art equipment." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.gatwicktuning.co.uk/about" />
+        <meta property="og:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
+        <meta property="og:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Gatwick Tuning | Expert ECU Remapping Surrey & Sussex" />
+        <meta name="twitter:description" content="Gatwick Tuning - Leading ECU remapping specialists in Surrey & Sussex. 10+ years experience, certified technicians, and state-of-the-art equipment." />
+        <meta name="twitter:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "AboutPage",
+              "name": "About Gatwick Tuning | Expert ECU Remapping Surrey & Sussex",
+              "description": "Gatwick Tuning - Leading ECU remapping specialists in Surrey & Sussex. 10+ years experience, certified technicians, and state-of-the-art equipment.",
+              "url": "https://www.gatwicktuning.co.uk/about",
+              "mainEntity": {
+                "@type": "Organization",
+                "name": "Gatwick Tuning",
+                "description": "Professional ECU remapping and vehicle performance tuning specialists in Surrey & Sussex",
+                "areaServed": ["Surrey", "Sussex"],
+                "foundingDate": "2013",
+                "numberOfEmployees": "5-10"
+              }
+            }
+          `}
+        </script>
       </Helmet>
 
       <main className="pt-20 min-h-screen bg-gray-50">
@@ -17,134 +48,123 @@ const AboutPage = () => {
           <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 id="about-heading" className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-                <span className="block">About</span>
-                <span className="block text-accent">Gatwick Tuning</span>
+                <span className="block">About Gatwick Tuning</span>
+                <span className="block text-accent">Your ECU Remapping Experts</span>
               </h1>
+              <p className="mt-4 text-xl text-gray-300 max-w-3xl mx-auto">
+                Leading specialists in vehicle performance tuning and ECU remapping across Surrey & Sussex
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Main Content */}
-        <section className="bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-              {/* About Content */}
-              <div className="bg-primary rounded-lg shadow-xl p-8">
-                <h2 className="text-3xl font-bold text-white mb-6">Why Choose Gatwick Tuning?</h2>
-                <div className="space-y-6">
-                  <p className="text-gray-200">
-                    At Gatwick Tuning, we specialise in professional ECU remapping services, delivering optimal performance and efficiency improvements for your vehicle. Our expert technicians use state-of-the-art equipment and software to enhance your vehicle's performance while maintaining reliability.
-                  </p>
-                  <p className="text-gray-200">
-                    With over a decade of experience and a commitment to excellence, our team of certified experts uses the latest technology and techniques to ensure the best results for your vehicle. We pride ourselves on providing personalised service and achieving remarkable performance gains.
-                  </p>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white">Our Expertise</h3>
-                    <ul className="space-y-2" aria-label="Our services">
-                      <li className="flex items-center text-gray-200">
-                        <svg className="w-5 h-5 mr-2 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Professional ECU Remapping for Enhanced Performance
-                      </li>
-                      <li className="flex items-center text-gray-200">
-                        <svg className="w-5 h-5 mr-2 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Custom Tuning Solutions for All Vehicle Types
-                      </li>
-                      <li className="flex items-center text-gray-200">
-                        <svg className="w-5 h-5 mr-2 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Performance Optimisation and Fuel Efficiency
-                      </li>
-                    </ul>
-                  </div>
+        {/* Our Story Section */}
+        <section className="py-16 bg-white" aria-labelledby="story-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="story-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Our Story
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                A decade of excellence in vehicle performance tuning across Surrey & Sussex
+              </p>
+            </div>
 
-                  <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <p className="text-gray-700 font-medium mb-3">Ready to enhance your vehicle's performance?</p>
-                    <div className="flex flex-wrap gap-4">
-                      <a href="tel:01342621241" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-blue-600 transition-colors">
-                        <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                        Call 01342 621241
-                      </a>
-                      <a href="mailto:info@gatwicktuning.co.uk" className="inline-flex items-center px-4 py-2 border border-accent rounded-md shadow-sm text-sm font-medium text-accent hover:bg-accent hover:text-white transition-colors">
-                        <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        Email Us
-                      </a>
-                    </div>
-                  </div>
+            <div className="mt-12 prose prose-lg mx-auto">
+              <p>
+                Founded in 2013, Gatwick Tuning has grown to become the most trusted name in ECU remapping and vehicle performance tuning across Surrey and Sussex. Our journey began with a simple mission: to provide professional, reliable, and effective tuning solutions for all types of vehicles.
+              </p>
+              <p>
+                Over the years, we've invested in state-of-the-art equipment and continuous training to ensure we stay at the forefront of automotive technology. Our team of certified technicians brings together decades of combined experience in vehicle tuning and diagnostics, serving customers throughout both Surrey and Sussex.
+              </p>
+            </div>
+          </div>
+        </section>
 
-                </div>
+        {/* Our Expertise Section */}
+        <section className="py-16 bg-gray-50" aria-labelledby="expertise-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="expertise-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Our Expertise
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                Specialized knowledge in all aspects of vehicle tuning
+              </p>
+            </div>
 
-                <div className="mt-8">
-                  <Link 
-                    to="/contact" 
-                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-accent hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
-                    aria-label="Contact us to book your tuning session"
-                  >
-                    Book Your Tuning Session
-                  </Link>
-                </div>
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">ECU Remapping</h3>
+                <p className="mt-2 text-gray-500">
+                  Advanced ECU remapping techniques for optimal engine performance and efficiency.
+                </p>
               </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Performance Tuning</h3>
+                <p className="mt-2 text-gray-500">
+                  Comprehensive performance tuning solutions for all vehicle types and requirements.
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Diagnostic Services</h3>
+                <p className="mt-2 text-gray-500">
+                  State-of-the-art diagnostic equipment for accurate vehicle assessment.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-              {/* Stats & Info */}
-              <div className="space-y-8">
-                <section className="bg-white rounded-lg shadow-lg p-6" aria-labelledby="impact-heading">
-                  <h3 id="impact-heading" className="text-xl font-semibold text-gray-900 mb-4">Our Impact</h3>
-                  <dl className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4">
-                      <dt className="text-3xl font-bold text-accent">500+</dt>
-                      <dd className="text-gray-600">Vehicles Tuned</dd>
-                    </div>
-                    <div className="text-center p-4">
-                      <dt className="text-3xl font-bold text-accent">100%</dt>
-                      <dd className="text-gray-600">Customer Satisfaction</dd>
-                    </div>
-                    <div className="text-center p-4">
-                      <dt className="text-3xl font-bold text-accent">10+</dt>
-                      <dd className="text-gray-600">Years Experience</dd>
-                    </div>
-                    <div className="text-center p-4">
-                      <dt className="text-3xl font-bold text-accent">20%</dt>
-                      <dd className="text-gray-600">Average Power Increase</dd>
-                    </div>
-                  </dl>
-                </section>
+        {/* Our Team Section */}
+        <section className="py-16 bg-white" aria-labelledby="team-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="team-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Our Team
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                Meet the experts behind our success
+              </p>
+            </div>
 
-                <section className="bg-white rounded-lg shadow-lg p-6" aria-labelledby="location-heading">
-                  <h3 id="location-heading" className="text-xl font-semibold text-gray-900 mb-4">Our Location</h3>
-                  <p className="text-gray-600 mb-4">
-                    Conveniently located near Gatwick Airport, we serve customers from Surrey, Sussex, and the greater London area. Our modern facility is equipped with the latest diagnostic and tuning equipment.
-                  </p>
-                  <address className="space-y-2 not-italic">
-                    <div className="flex items-center text-gray-600">
-                      <svg className="w-5 h-5 mr-2 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span>Near Gatwick Airport, Surrey</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <svg className="w-5 h-5 mr-2 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <time>Mon-Fri: 9:00 AM - 6:00 PM</time>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <svg className="w-5 h-5 mr-2 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      <a href="tel:01342621241" className="hover:text-accent transition-colors">01342 621241</a>
-                    </div>
-                  </address>
-                </section>
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Certified Technicians</h3>
+                <p className="mt-2 text-gray-500">
+                  Our team of certified professionals brings years of experience in vehicle tuning.
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Continuous Training</h3>
+                <p className="mt-2 text-gray-500">
+                  Regular training ensures we stay updated with the latest tuning technologies.
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Customer Support</h3>
+                <p className="mt-2 text-gray-500">
+                  Dedicated support team to assist you throughout your tuning journey.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-16 bg-primary" aria-labelledby="cta-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="cta-heading" className="text-3xl font-extrabold text-white sm:text-4xl">
+                Ready to Experience Our Expertise?
+              </h2>
+              <p className="mt-4 text-lg text-gray-300">
+                Contact us today for a free consultation and discover how we can enhance your vehicle's performance
+              </p>
+              <div className="mt-8">
+                <Link to="/contact" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-white hover:bg-gray-50">
+                  Get Started
+                </Link>
               </div>
             </div>
           </div>

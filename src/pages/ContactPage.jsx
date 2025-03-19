@@ -11,9 +11,9 @@ const ContactPage = () => {
     name: '',
     email: '',
     phone: '',
-    message: '',
-    preferredDate: '',
-    preferredTime: ''
+    vehicle: '',
+    service: '',
+    message: ''
   });
 
   const [formStatus, setFormStatus] = useState({
@@ -105,11 +105,10 @@ Additional Notes:`;
   }, [vehicleDetails, selectedServices, totalPrice]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   // Handle form submission
@@ -131,153 +130,252 @@ Additional Notes:`;
   return (
     <>
       <Helmet>
-        <title>Contact Us | Book Your Tuning Session | Gatwick Tuning</title>
-        <meta name="description" content="Book your professional ECU remapping session with Gatwick Tuning. Contact us for expert vehicle tuning services in Surrey." />
+        <title>Contact Gatwick Tuning | ECU Remapping Surrey & Sussex</title>
+        <meta name="description" content="Contact Gatwick Tuning for professional ECU remapping services in Surrey & Sussex. Free consultation, expert advice, and competitive pricing. Call or email us today." />
         <link rel="canonical" href="https://www.gatwicktuning.co.uk/contact" />
+        <meta name="keywords" content="contact Gatwick Tuning, ECU remapping Surrey, ECU remapping Sussex, car tuning contact, performance tuning Surrey, performance tuning Sussex, vehicle tuning consultation" />
+        <meta property="og:title" content="Contact Gatwick Tuning | ECU Remapping Surrey & Sussex" />
+        <meta property="og:description" content="Contact Gatwick Tuning for professional ECU remapping services in Surrey & Sussex. Free consultation, expert advice, and competitive pricing." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.gatwicktuning.co.uk/contact" />
+        <meta property="og:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
+        <meta property="og:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Gatwick Tuning | ECU Remapping Surrey & Sussex" />
+        <meta name="twitter:description" content="Contact Gatwick Tuning for professional ECU remapping services in Surrey & Sussex. Free consultation, expert advice, and competitive pricing." />
+        <meta name="twitter:image" content="https://www.gatwicktuning.co.uk/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Gatwick Tuning - Professional ECU Remapping Services" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "ContactPage",
+              "name": "Contact Gatwick Tuning | ECU Remapping Surrey & Sussex",
+              "description": "Contact Gatwick Tuning for professional ECU remapping services in Surrey & Sussex. Free consultation, expert advice, and competitive pricing.",
+              "url": "https://www.gatwicktuning.co.uk/contact",
+              "mainEntity": {
+                "@type": "Organization",
+                "name": "Gatwick Tuning",
+                "contactPoint": {
+                  "@type": "ContactPoint",
+                  "telephone": "+44-1342-621241",
+                  "contactType": "customer service",
+                  "areaServed": ["Surrey", "Sussex"],
+                  "availableLanguage": "English"
+                }
+              }
+            }
+          `}
+        </script>
       </Helmet>
 
       <main className="pt-20 min-h-screen bg-gray-50">
+        {/* Hero Section */}
         <section className="relative bg-primary" aria-labelledby="contact-heading">
           <div className="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 id="contact-heading" className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-                <span className="block">Book Your</span>
-                <span className="block text-accent">Tuning Session</span>
+                <span className="block">Contact Us</span>
+                <span className="block text-accent">Get in Touch</span>
               </h1>
+              <p className="mt-4 text-xl text-gray-300 max-w-3xl mx-auto">
+                Ready to enhance your vehicle's performance? Contact us for a free consultation
+              </p>
             </div>
           </div>
         </section>
 
-        <section className="max-w-2xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-          <div className="bg-white shadow-lg rounded-lg p-8">
-            {formStatus.submitted ? (
-              <div className="text-center py-12">
-                <div className="bg-green-50 rounded-full h-24 w-24 flex items-center justify-center mx-auto mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h2 className="text-3xl font-bold mt-4 text-gray-800">Thank You for Your Enquiry!</h2>
-                <p className="mt-4 text-lg text-gray-600">Your booking request has been sent successfully.</p>
-                <div className="mt-6 bg-gray-50 p-6 rounded-lg text-left">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">What happens next?</h3>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                    <li>Our team will review your request within 24 hours</li>
-                    <li>We'll contact you via email or phone to confirm your booking</li>
-                    <li>If you have any urgent questions, please call us at <a href="tel:+441342621241" className="text-accent font-medium">01342 621241</a></li>
-                  </ul>
-                </div>
-                <button 
-                  onClick={() => setFormStatus({ submitted: false, error: false })}
-                  className="mt-8 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
-                >
-                  Submit Another Enquiry
-                </button>
-              </div>
-            ) : (
-              <form 
-                action="https://formsubmit.co/info@gatwicktuning.co.uk" 
-                method="POST"
-                className="space-y-6"
-                onSubmit={handleSubmit}
-              >
-                {/* FormSubmit configuration */}
-                <input type="hidden" name="_subject" value="New Booking Request from Website" />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_template" value="table" />
-                <input type="hidden" name="_next" value={`${window.location.href}?success=true`} />
+        {/* Contact Information Section */}
+        <section className="py-16 bg-white" aria-labelledby="contact-info-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="contact-info-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Contact Information
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                Get in touch with us through any of these channels
+              </p>
+            </div>
 
+            <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Phone</h3>
+                <p className="mt-2 text-gray-500">
+                  <a href="tel:01342621241" className="hover:text-accent">
+                    01342 621241
+                  </a>
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Email</h3>
+                <p className="mt-2 text-gray-500">
+                  <a href="mailto:info@gatwicktuning.co.uk" className="hover:text-accent">
+                    info@gatwicktuning.co.uk
+                  </a>
+                </p>
+              </div>
+              <div className="relative">
+                <h3 className="text-xl font-semibold text-gray-900">Address</h3>
+                <p className="mt-2 text-gray-500">
+                  Near Gatwick Airport<br />
+                  Surrey & Sussex, United Kingdom
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Form Section */}
+        <section className="py-16 bg-gray-50" aria-labelledby="contact-form-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="contact-form-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Send Us a Message
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                Fill out the form below and we'll get back to you shortly
+              </p>
+            </div>
+
+            <div className="mt-12 max-w-lg mx-auto">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    Name
+                  </label>
                   <input
                     type="text"
-                    id="name"
                     name="name"
+                    id="name"
                     value={formData.name}
                     onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
                     required
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent sm:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
                   <input
                     type="email"
-                    id="email"
                     name="email"
+                    id="email"
                     value={formData.email}
                     onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
                     required
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent sm:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                    Phone
+                  </label>
                   <input
                     type="tel"
-                    id="phone"
                     name="phone"
+                    id="phone"
                     value={formData.phone}
                     onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
                     required
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent sm:text-sm"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="preferredDate" className="block text-sm font-medium text-gray-700">Preferred Date</label>
-                    <input
-                      type="date"
-                      id="preferredDate"
-                      name="preferredDate"
-                      value={formData.preferredDate}
-                      onChange={handleChange}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent sm:text-sm"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="preferredTime" className="block text-sm font-medium text-gray-700">Preferred Time</label>
-                    <select
-                      id="preferredTime"
-                      name="preferredTime"
-                      value={formData.preferredTime}
-                      onChange={handleChange}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent sm:text-sm"
-                    >
-                      <option value="">Select a time</option>
-                      <option value="morning">Morning (9am - 12pm)</option>
-                      <option value="afternoon">Afternoon (12pm - 5pm)</option>
-                    </select>
-                  </div>
+                <div>
+                  <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700">
+                    Vehicle Details
+                  </label>
+                  <input
+                    type="text"
+                    name="vehicle"
+                    id="vehicle"
+                    value={formData.vehicle}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                    placeholder="Make, Model, Year"
+                    required
+                  />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+                  <label htmlFor="service" className="block text-sm font-medium text-gray-700">
+                    Service Required
+                  </label>
+                  <select
+                    name="service"
+                    id="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                    required
+                  >
+                    <option value="">Select a service</option>
+                    <option value="stage1">Stage 1 Tuning</option>
+                    <option value="stage2">Stage 2 Tuning</option>
+                    <option value="dpf">DPF Solutions</option>
+                    <option value="egr">EGR Solutions</option>
+                    <option value="adblue">AdBlue Solutions</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                    Message
+                  </label>
                   <textarea
-                    id="message"
                     name="message"
-                    rows={8}
+                    id="message"
+                    rows={4}
                     value={formData.message}
                     onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
                     required
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent sm:text-sm"
                   />
                 </div>
 
                 <div>
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
                   >
-                    Send Booking Request
+                    Send Message
                   </button>
                 </div>
               </form>
-            )}
+            </div>
+          </div>
+        </section>
+
+        {/* Map Section */}
+        <section className="py-16 bg-white" aria-labelledby="location-heading">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 id="location-heading" className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Our Location
+              </h2>
+              <p className="mt-4 text-lg text-gray-500">
+                Conveniently located near Gatwick Airport, serving Surrey & Sussex
+              </p>
+            </div>
+
+            <div className="mt-12">
+              <div className="aspect-w-16 aspect-h-9">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2504.1234567890123!2d-0.1615!3d51.1537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDA5JzEzLjMiTiAwwrAwOSc0MS40Ilc!5e0!3m2!1sen!2suk!4v1234567890123!5m2!1sen!2suk"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Gatwick Tuning Location"
+                />
+              </div>
+            </div>
           </div>
         </section>
       </main>
