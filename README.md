@@ -1,115 +1,136 @@
-# Gatwick Tuning Website - Docker Setup
+# Gatwick Tuning Website - Production Build
 
-This repository contains the Dockerized version of the Gatwick Tuning website. The setup includes a production-ready Nginx configuration with optimizations for performance and security.
+This is the production build of the Gatwick Tuning Website, which includes both the frontend (built with React/Vite) and the API backend (Python/Flask).
 
-## Prerequisites
+## Overview
 
-- Docker
-- Docker Compose
-
-## Quick Start
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd gatwick-tuning-docker
-```
-
-2. Build and run the containers:
-```bash
-docker-compose up -d
-```
-
-The website will be available at `http://localhost:80`
-
-## Features
-
-- Production-grade Nginx configuration
-- Gzip compression enabled
-- Static file caching
-- CORS headers configured
-- Security headers enabled
-- React Router support
-- Automatic container restart
-- Logging configuration
+This application provides a vehicle registration lookup service that:
+1. Allows users to enter their vehicle registration plate
+2. Retrieves vehicle performance data using web scraping
+3. Displays original and tuned performance figures
 
 ## Directory Structure
 
+- `/dist` - Contains the built frontend application
+- `/api` - Contains the API server code
+  - `/api/api` - Python modules for the API functionality
+- `/src` - Source code for the frontend (used only if rebuilding)
+
+## Requirements
+
+- Python 3.9+ with pip
+- For rebuilding the frontend: Node.js and npm
+
+## Installation
+
+### Quick Start
+
+1. Simply run the start script:
+
+```bash
+./start.sh
 ```
-.
-├── Dockerfile          # Multi-stage build for production
-├── docker-compose.yml  # Docker Compose configuration
-├── nginx.conf         # Nginx server configuration
-├── .dockerignore      # Files to exclude from Docker build
-└── src/               # Application source code
+
+The script will:
+- Check for required dependencies
+- Set up a Python virtual environment (if needed)
+- Install required Python packages
+- Start the server on port 5000
+
+### Manual Setup
+
+If you prefer to set things up manually:
+
+1. Install Python dependencies:
+
+```bash
+cd api
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
+
+2. Start the server:
+
+```bash
+cd api
+python3 server.py
+```
+
+## Testing
+
+You can test the API functionality directly without starting the full server:
+
+```bash
+./test-api.py WO15CZY
+```
+
+Replace `WO15CZY` with any UK vehicle registration you want to test.
 
 ## Configuration
 
-### Environment Variables
+- The server runs on port 5000 by default. Change this by setting the `PORT` environment variable.
+- The API endpoint is at `/api/vehicle-lookup?reg=REGISTRATION_NUMBER`
+- The server serves the built frontend from the `/dist` directory
 
-- `NODE_ENV`: Set to 'production' by default
+## Rebuilding the Frontend
 
-### Ports
+If you need to make changes to the frontend:
 
-- The application runs on port 80 by default
-- You can modify the port mapping in `docker-compose.yml`
-
-### Volumes
-
-- Nginx logs are persisted in the `./logs` directory
-
-## Development
-
-To build the Docker image manually:
+1. Edit the source files in `/src`
+2. Install dependencies:
 
 ```bash
-docker build -t gatwick-tuning .
+npm install
 ```
 
-To run the container manually:
+3. Build the frontend:
 
 ```bash
-docker run -p 80:80 gatwick-tuning
+npm run build
 ```
 
-## Production Deployment
+The built files will be placed in the `/dist` directory.
 
-1. Update the `nginx.conf` with your domain name
-2. Configure SSL certificates if needed
-3. Update security headers in `nginx.conf`
-4. Deploy using:
-```bash
-docker-compose -f docker-compose.yml up -d
+## Troubleshooting
+
+- **Server won't start**: Make sure port 5000 isn't in use by another application
+- **API errors**: Check the server logs for details
+- **CORS issues**: The server has CORS enabled by default for all routes
+
+## API Response Format
+
+The API returns JSON data in the following format:
+
+```json
+{
+  "brand": "BMW3 Series",
+  "model": "BMW",
+  "variant": "330d 254 bhp",
+  "year": "2015",
+  "specs": {
+    "fuel": "Diesel",
+    "engine": "2993 ccm",
+    "ecu": "Bosch EDC17_C50_C56"
+  },
+  "performance_figures": {
+    "stage": "Stage 1",
+    "original": {
+      "power": "254 bhp",
+      "torque": "413 lb/ft"
+    },
+    "modified": {
+      "power": "310 bhp",
+      "torque": "472 lb/ft"
+    },
+    "gains": {
+      "power": "+56 bhp",
+      "torque": "+59 lb/ft"
+    }
+  }
+}
 ```
 
-## Maintenance
+## License
 
-### Logs
-
-Nginx logs are available in the `./logs` directory
-
-### Updates
-
-To update the application:
-
-1. Pull the latest code
-2. Rebuild the container:
-```bash
-docker-compose build
-```
-3. Restart the services:
-```bash
-docker-compose down
-docker-compose up -d
-```
-
-## Security
-
-- All security headers are configured in `nginx.conf`
-- Regular security updates are recommended
-- Monitor Docker security advisories
-
-## Support
-
-For support, please contact the development team. 
+This project is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
