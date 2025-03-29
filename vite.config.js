@@ -20,16 +20,10 @@ export default defineConfig({
       'gatwicktuning.co.uk'
     ],
     proxy: {
-      '/api': {
-        target: 'https://gatwicktuning-api-jamiewreynolds.replit.app',
+      '/api-proxy': {
+        target: 'http://data.tcserver.co.uk:5001',
         changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-          'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-        }
+        rewrite: (path) => path.replace(/^\/api-proxy/, ''),
       }
     }
   },
@@ -44,7 +38,14 @@ export default defineConfig({
       '.kirk.replit.dev',
       'gatwicktuning.replit.app',
       'gatwicktuning.co.uk'
-    ]
+    ],
+    proxy: {
+      '/api-proxy': {
+        target: 'http://data.tcserver.co.uk:5001',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-proxy/, ''),
+      }
+    }
   },
   build: {
     outDir: 'dist',

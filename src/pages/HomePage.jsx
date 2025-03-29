@@ -5,9 +5,16 @@ import TuningGauge from '../components/TuningGauge';
 import { Helmet } from 'react-helmet-async';
 import { Car, Search } from 'lucide-react';
 
+// Helper function to extract numbers from strings like "114 bhp" or "260 Nm"
+const extractNumber = (str) => {
+  if (!str || typeof str !== 'string') return 0;
+  const match = str.match(/(\d+)/);
+  return match ? parseInt(match[0]) : 0;
+};
+
 // Configure axios
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: '/api-proxy',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -104,29 +111,27 @@ const HomePage = () => {
       console.log('API Response:', response.data);
       
       if (response.data.status === 'success') {
-        const { performance_reg_data, vehicle_data_only } = response.data.data;
+        // Use the actual data from the API response
+        const apiData = response.data.data;
         
-        if (!performance_reg_data && !vehicle_data_only) {
-          setError('No vehicle data found for this registration');
-          return;
-        }
-
-        setVehicleDetails({
-          make: performance_reg_data?.brand || vehicle_data_only?.make || 'Unknown',
-          model: performance_reg_data?.model || vehicle_data_only?.model || 'Unknown',
-          year: performance_reg_data?.year || vehicle_data_only?.year || 'Unknown',
-          fuel: performance_reg_data?.specs?.fuel || vehicle_data_only?.fuel || 'Unknown',
-          engine: performance_reg_data?.specs?.engine || vehicle_data_only?.cc || 'Unknown',
-          ecu: performance_reg_data?.specs?.ecu || 'Not Available',
-          variant: performance_reg_data?.variant || 'Standard',
-          transmission: vehicle_data_only?.transmission || 'Unknown',
+        const vehicleData = {
+          make: apiData.brand || 'Unknown',
+          model: apiData.model || 'Unknown',
+          year: apiData.year || 'Unknown',
+          fuel: apiData.specs?.fuel || 'Unknown',
+          engine: apiData.specs?.engine || 'Unknown',
+          ecu: apiData.specs?.ecu || 'Not Available',
+          variant: apiData.variant || 'Standard',
+          transmission: 'Unknown', // API doesn't provide this
           potential: {
-            basePower: parseInt(performance_reg_data?.performance_figures?.original?.power) || 0,
-            targetPower: parseInt(performance_reg_data?.performance_figures?.modified?.power) || 0,
-            baseTorque: parseInt(performance_reg_data?.performance_figures?.original?.torque) || 0,
-            targetTorque: parseInt(performance_reg_data?.performance_figures?.modified?.torque) || 0
+            basePower: parseInt(apiData.performance_figures?.original?.power) || extractNumber(apiData.performance_figures?.original?.power) || 0,
+            targetPower: parseInt(apiData.performance_figures?.modified?.power) || extractNumber(apiData.performance_figures?.modified?.power) || 0,
+            baseTorque: parseInt(apiData.performance_figures?.original?.torque) || extractNumber(apiData.performance_figures?.original?.torque) || 0,
+            targetTorque: parseInt(apiData.performance_figures?.modified?.torque) || extractNumber(apiData.performance_figures?.modified?.torque) || 0
           }
-        });
+        };
+        
+        setVehicleDetails(vehicleData);
       } else {
         throw new Error('Failed to fetch vehicle data');
       }

@@ -17,10 +17,7 @@ echo "Setting up system dependencies..."
 # Update package lists
 apt-get update
 
-# Install Python and required tools
-apt-get install -y python3 python3-pip python3-venv
-
-# Install Node.js if needed for future frontend updates
+# Install Node.js for frontend
 apt-get install -y nodejs npm
 
 # Create a service user (optional)
@@ -38,28 +35,26 @@ cp -r . "$APP_DIR"
 # Set ownership
 chown -R gatwick:gatwick "$APP_DIR"
 
-# Create Python virtual environment
-echo "Setting up Python environment..."
+# Build the application
+echo "Building the application..."
 cd "$APP_DIR"
-su - gatwick -c "cd $APP_DIR && python3 -m venv api/venv"
-su - gatwick -c "cd $APP_DIR && api/venv/bin/pip install -r api/requirements.txt"
+su - gatwick -c "cd $APP_DIR && npm install && npm run build"
 
-# Create a systemd service file
+# Create a systemd service file for the frontend
 echo "Creating systemd service..."
 cat > /etc/systemd/system/gatwick-tuning.service << 'EOL'
 [Unit]
-Description=Gatwick Tuning API and Frontend
+Description=Gatwick Tuning Frontend
 After=network.target
 
 [Service]
 User=gatwick
 Group=gatwick
 WorkingDirectory=/opt/gatwick-tuning
-ExecStart=/opt/gatwick-tuning/api/venv/bin/python3 /opt/gatwick-tuning/api/server.py
+ExecStart=/usr/bin/npm run preview
 Restart=always
 RestartSec=5
-Environment=PORT=5000
-Environment=FLASK_ENV=production
+Environment=PORT=3000
 
 [Install]
 WantedBy=multi-user.target
@@ -72,5 +67,5 @@ systemctl enable gatwick-tuning
 systemctl start gatwick-tuning
 
 echo "=== Deployment complete! ==="
-echo "The application is now running at http://localhost:5000"
+echo "The application is now running at http://localhost:3000"
 echo "Set up your web server (nginx/apache) to proxy requests to this address." 

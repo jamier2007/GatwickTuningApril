@@ -25,8 +25,42 @@ export default function RegistrationLookup() {
     setVehicleData(null)
 
     try {
-      const response = await axios.get(`/api/vehicle-lookup?reg=${registration.trim()}`)
-      setVehicleData(response.data)
+      const cleanReg = registration.trim().toUpperCase()
+      const response = await axios.get(`/api-proxy/${cleanReg}`)
+      
+      if (response.data.status === 'success') {
+        // Use the actual data from the API
+        const apiData = response.data.data;
+        
+        setVehicleData({
+          brand: apiData.brand || 'Unknown',
+          model: apiData.model || 'Unknown',
+          variant: apiData.variant || 'Standard',
+          year: apiData.year || 'Unknown',
+          specs: {
+            fuel: apiData.specs?.fuel || 'Unknown',
+            engine: apiData.specs?.engine || 'Unknown',
+            ecu: apiData.specs?.ecu || 'Not Available'
+          },
+          performance_figures: apiData.performance_figures || {
+            stage: 'No Data',
+            original: {
+              power: 'N/A',
+              torque: 'N/A'
+            },
+            modified: {
+              power: 'N/A',
+              torque: 'N/A'
+            },
+            gains: {
+              power: 'N/A',
+              torque: 'N/A'
+            }
+          }
+        })
+      } else {
+        throw new Error('Failed to fetch vehicle data')
+      }
     } catch (err) {
       setError("Failed to retrieve vehicle data. Please try again.")
       console.error(err)

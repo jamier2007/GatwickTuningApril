@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
+import emailjs from '@emailjs/browser';
 
 const ContactPage = () => {
   const location = useLocation();
@@ -21,6 +22,16 @@ const ContactPage = () => {
     error: false
   });
 
+  // EmailJS configuration
+  const EMAILJS_SERVICE_ID = "service_gatwicktuning"; // Replace with your actual Service ID
+  const EMAILJS_TEMPLATE_ID = "template_contact_form"; // Replace with your actual Template ID
+  const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Replace with your actual Public Key
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
+
   // Check if the URL has a success parameter (for FormSubmit redirect)
   useEffect(() => {
     // Check if we've been redirected back from FormSubmit
@@ -28,31 +39,47 @@ const ContactPage = () => {
     if (urlParams.has('success')) {
       setFormStatus({ submitted: true, error: false });
       
-      // Send WhatsApp notification
-      sendWhatsAppNotification();
+      // Send notifications
+      sendNotifications();
       
       // Clean up the URL
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
 
+  // Function to send both WhatsApp and Email notifications
+  const sendNotifications = async () => {
+    try {
+      // Get the form data from localStorage
+      const storedFormData = JSON.parse(localStorage.getItem('lastFormSubmission')) || formData;
+      
+      // Send WhatsApp notification
+      await sendWhatsAppNotification(storedFormData);
+      
+      // Send Email notification
+      await sendEmailNotification(storedFormData);
+      
+      // Clear the stored form data
+      localStorage.removeItem('lastFormSubmission');
+    } catch (error) {
+      console.error('Error sending notifications:', error);
+    }
+  };
+
   // Function to send WhatsApp notification via CallMeBot API
-  const sendWhatsAppNotification = async () => {
+  const sendWhatsAppNotification = async (data) => {
     try {
       const phone = '447922921110';
       const apiKey = '4542589';
       
-      // Get the form data from localStorage
-      const storedFormData = JSON.parse(localStorage.getItem('lastFormSubmission')) || formData;
-      
       // Create notification message
       const notificationText = `New Booking Request:
-Name: ${storedFormData.name}
-Email: ${storedFormData.email}
-Phone: ${storedFormData.phone}
-Date: ${storedFormData.preferredDate || 'Not specified'}
-Time: ${storedFormData.preferredTime || 'Not specified'}
-Message: ${storedFormData.message ? storedFormData.message.substring(0, 100) + '...' : 'No message'}`;
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
+Vehicle: ${data.vehicle}
+Service: ${data.service}
+Message: ${data.message ? data.message.substring(0, 100) + '...' : 'No message'}`;
       
       // Encode the message for URL
       const encodedText = encodeURIComponent(notificationText);
@@ -61,11 +88,27 @@ Message: ${storedFormData.message ? storedFormData.message.substring(0, 100) + '
       await axios.get(`https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodedText}&apikey=${apiKey}`);
       
       console.log('WhatsApp notification sent successfully');
-      
-      // Clear the stored form data
-      localStorage.removeItem('lastFormSubmission');
     } catch (error) {
       console.error('Error sending WhatsApp notification:', error);
+    }
+  };
+
+  // Function to send Email notification via EmailJS
+  const sendEmailNotification = async (data) => {
+    try {
+      const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        from_phone: data.phone,
+        vehicle: data.vehicle,
+        service: data.service,
+        message: data.message,
+      };
+      
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      console.log('Email notification sent successfully');
+    } catch (error) {
+      console.error('Error sending Email notification:', error);
     }
   };
 
@@ -116,11 +159,26 @@ Additional Notes:`;
     e.preventDefault();
     
     try {
+      setFormStatus({ submitted: false, error: false });
+      
       // Store form data in localStorage before submission
       localStorage.setItem('lastFormSubmission', JSON.stringify(formData));
       
       // Submit the form programmatically
-      e.target.submit();
+      await sendNotifications();
+      
+      // Show success message
+      setFormStatus({ submitted: true, error: false });
+      
+      // Reset form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        vehicle: '',
+        service: '',
+        message: ''
+      });
     } catch (error) {
       console.error('Error during form submission:', error);
       setFormStatus({ submitted: false, error: true });
@@ -217,8 +275,11 @@ Additional Notes:`;
               <div className="relative">
                 <h3 className="text-xl font-semibold text-gray-900">Address</h3>
                 <p className="mt-2 text-gray-500">
-                  Near Gatwick Airport<br />
-                  Surrey & Sussex, United Kingdom
+                  Woodlands Garage<br />
+                  Chapel Road<br />
+                  Smallfield<br />
+                  Surrey<br />
+                  RH6 9NN
                 </p>
               </div>
             </div>
@@ -238,114 +299,135 @@ Additional Notes:`;
             </div>
 
             <div className="mt-12 max-w-lg mx-auto">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    id="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700">
-                    Vehicle Details
-                  </label>
-                  <input
-                    type="text"
-                    name="vehicle"
-                    id="vehicle"
-                    value={formData.vehicle}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
-                    placeholder="Make, Model, Year"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="service" className="block text-sm font-medium text-gray-700">
-                    Service Required
-                  </label>
-                  <select
-                    name="service"
-                    id="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
-                    required
-                  >
-                    <option value="">Select a service</option>
-                    <option value="stage1">Stage 1 Tuning</option>
-                    <option value="stage2">Stage 2 Tuning</option>
-                    <option value="dpf">DPF Solutions</option>
-                    <option value="egr">EGR Solutions</option>
-                    <option value="adblue">AdBlue Solutions</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-                    Message
-                  </label>
-                  <textarea
-                    name="message"
-                    id="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
-                    required
-                  />
-                </div>
-
-                <div>
+              {formStatus.submitted ? (
+                <div className="bg-green-50 border border-green-200 rounded-md p-6 text-center">
+                  <h3 className="text-xl font-semibold text-green-700 mb-2">Thank You!</h3>
+                  <p className="text-green-600">
+                    Your message has been sent successfully. We'll get back to you shortly.
+                  </p>
                   <button
-                    type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
+                    onClick={() => setFormStatus({ submitted: false, error: false })}
+                    className="mt-4 px-4 py-2 bg-accent text-white rounded hover:bg-accent-dark transition-colors"
                   >
-                    Send Message
+                    Send Another Message
                   </button>
                 </div>
-              </form>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-sm">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="mt-1 px-4 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="mt-1 px-4 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      id="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="mt-1 px-4 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700">
+                      Vehicle Details
+                    </label>
+                    <input
+                      type="text"
+                      name="vehicle"
+                      id="vehicle"
+                      value={formData.vehicle}
+                      onChange={handleChange}
+                      className="mt-1 px-4 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                      placeholder="Make, Model, Year"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="service" className="block text-sm font-medium text-gray-700">
+                      Service Required
+                    </label>
+                    <select
+                      name="service"
+                      id="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="mt-1 px-4 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                      required
+                    >
+                      <option value="">Select a service</option>
+                      <option value="stage1">Stage 1 Tuning</option>
+                      <option value="stage2">Stage 2 Tuning</option>
+                      <option value="dpf">DPF Solutions</option>
+                      <option value="egr">EGR Solutions</option>
+                      <option value="adblue">AdBlue Solutions</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                      Message
+                    </label>
+                    <textarea
+                      name="message"
+                      id="message"
+                      rows={4}
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="mt-1 px-4 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-accent focus:border-accent"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
+                    >
+                      Send Message
+                    </button>
+                  </div>
+                  
+                  {formStatus.error && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm mt-4">
+                      There was an error sending your message. Please try again or contact us directly.
+                    </div>
+                  )}
+                </form>
+              )}
             </div>
           </div>
         </section>
@@ -358,21 +440,21 @@ Additional Notes:`;
                 Our Location
               </h2>
               <p className="mt-4 text-lg text-gray-500">
-                Conveniently located near Gatwick Airport, serving Surrey & Sussex
+                Visit us at Woodlands Garage, Chapel Road, Smallfield, Surrey, RH6 9NN
               </p>
             </div>
 
             <div className="mt-12">
               <div className="aspect-w-16 aspect-h-9">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2504.1234567890123!2d-0.1615!3d51.1537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDA5JzEzLjMiTiAwwrAwOSc0MS40Ilc!5e0!3m2!1sen!2suk!4v1234567890123!5m2!1sen!2suk"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423796.3389261468!2d-0.14294777654557725!3d51.12129261174203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4875f098a90be6b5%3A0x2cf5b95559d320f!2sWoodlands%20Garage!5e0!3m2!1sen!2suk!4v1743287341080!5m2!1sen!2suk"
                   width="100%"
                   height="450"
                   style={{ border: 0 }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Gatwick Tuning Location"
+                  title="Gatwick Tuning at Woodlands Garage"
                 />
               </div>
             </div>
