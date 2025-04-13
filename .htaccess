@@ -9,6 +9,9 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
+# API Proxy - Forward requests to the vehicle data API
+RewriteRule ^api-proxy/(.*)$ http://data.tcserver.co.uk:5001/$1 [P,L]
+
 # Specific Blog Post Handling - Ensure SEO-friendly URLs
 # Redirect any old URLs or alternative formats to the canonical URL
 RewriteRule ^ecu-tuning-benefits/?$ /blog/ecu-remapping-benefits-guide [R=301,L]
