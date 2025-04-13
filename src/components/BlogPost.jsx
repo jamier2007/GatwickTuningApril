@@ -12,6 +12,7 @@ import performanceGuide from '../blog/performance-tuning-guide.md?url';
 import mythsFacts from '../blog/myths-and-facts.md?url';
 import maintenanceTips from '../blog/maintenance-tips.md?url';
 import choosingService from '../blog/choosing-tuning-service.md?url';
+import ecuRemappingBenefits from '../blog/ecu-remapping-benefits-guide.md?url';
 
 // Blog post metadata for SEO
 const blogMetadata = {
@@ -62,6 +63,12 @@ const blogMetadata = {
     description: 'Guide to choosing the right vehicle tuning service. Learn what to look for, questions to ask, and why Gatwick Tuning is the preferred choice.',
     keywords: 'choosing tuning service, best ECU remapping, tuning company selection, quality remapping',
     imageUrl: '/blog/choosing-service.jpg'
+  },
+  'ecu-remapping-benefits-guide': {
+    title: 'The Complete Guide to ECU Remapping Benefits | Gatwick Tuning',
+    description: 'Discover the real benefits of ECU remapping, from improved fuel efficiency to increased power. Learn if remapping is right for your vehicle.',
+    keywords: 'ECU remapping benefits, fuel efficiency, engine performance, torque improvement, Surrey remapping',
+    imageUrl: '/blog/ecu-remapping-benefits.jpg'
   }
 };
 
@@ -99,6 +106,9 @@ const BlogPost = () => {
             break;
           case 'choosing-tuning-service':
             postUrl = choosingService;
+            break;
+          case 'ecu-remapping-benefits-guide':
+            postUrl = ecuRemappingBenefits;
             break;
           default:
             throw new Error('Blog post not found');
@@ -185,6 +195,23 @@ const BlogPost = () => {
     };
   };
 
+  // Process markdown content to remove frontmatter
+  const processContent = (content) => {
+    if (!content) return '';
+    
+    // Check if content has frontmatter (starts with ---)
+    if (content.startsWith('---')) {
+      const endOfFrontmatter = content.indexOf('---', 3);
+      if (endOfFrontmatter !== -1) {
+        // Return content after the frontmatter section
+        return content.slice(endOfFrontmatter + 3).trim();
+      }
+    }
+    return content;
+  };
+
+  const processedContent = processContent(post);
+
   return (
     <div className="bg-slate-50 min-h-screen">
       {post && slug && blogMetadata[slug] ? (
@@ -207,15 +234,15 @@ const BlogPost = () => {
       
       <main className="pt-20 min-h-screen bg-gray-50">
         <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <Link to="/blog" className="inline-block mb-8 text-secondary hover:text-blue-600">
+          <Link to="/blog" className="inline-block mb-8 text-secondary hover:text-blue-600 text-center w-full">
             ← Back to Blog
           </Link>
           
-          <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-secondary hover:prose-a:text-blue-600">
-            <ReactMarkdown>{post}</ReactMarkdown>
+          <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-secondary hover:prose-a:text-blue-600 prose-headings:text-center">
+            <ReactMarkdown>{processedContent}</ReactMarkdown>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-gray-200">
+          <div className="mt-12 pt-8 border-t border-gray-200 text-center">
             <Link to="/blog" className="inline-flex items-center text-secondary hover:text-blue-600">
               ← Back to Blog
             </Link>

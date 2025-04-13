@@ -5,6 +5,14 @@ import { Helmet } from 'react-helmet-async';
 const BlogPage = () => {
   const blogPosts = [
     {
+      title: "The Complete Guide to ECU Remapping Benefits: Is It Worth It?",
+      excerpt: "Discover the real benefits of ECU remapping, from improved fuel efficiency to increased power. Learn if remapping is right for your vehicle and what results you can expect.",
+      date: "April 15, 2024",
+      category: "Performance",
+      readTime: "8 min read",
+      slug: "ecu-remapping-benefits-guide"
+    },
+    {
       title: "Unlocking Your Vehicle's Potential: The Benefits of DPF, EGR, and AdBlue Deletes",
       excerpt: "Discover how professional modifications can enhance your vehicle's performance, improve fuel efficiency, and reduce maintenance costs.",
       date: "December 29, 2023",
