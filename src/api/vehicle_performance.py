@@ -145,7 +145,7 @@ if __name__ == "__main__":
     async def test_api():
         reg = "SY65TMV"  # Use the provided registration
         
-        # Create a connector with optimized settings
+        # Create a connector with optimised settings
         connector = aiohttp.TCPConnector(
             limit=conn_limit,
             limit_per_host=conn_limit_per_host,

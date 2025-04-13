@@ -9,8 +9,11 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
-# API Proxy - Forward requests to the vehicle data API
-RewriteRule ^api-proxy/(.*)$ http://data.tcserver.co.uk:5001/$1 [P,L]
+# API Proxy - Forward requests to our own vehicle data API
+# Either use the locally hosted API or the container
+RewriteRule ^api-proxy/(.*)$ http://localhost:5000/$1 [P,L]
+# Alternative if using container:
+# RewriteRule ^api-proxy/(.*)$ http://vehicle-api:5000/$1 [P,L]
 
 # Specific Blog Post Handling - Ensure SEO-friendly URLs
 # Redirect any old URLs or alternative formats to the canonical URL

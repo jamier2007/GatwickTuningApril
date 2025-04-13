@@ -7,7 +7,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from vehicle_performance import get_performance_data
 
-# Create a connector with optimized settings
+# Create a connector with optimised settings
 conn_limit = 100  # Increase connection limit
 conn_limit_per_host = 10  # Increase per-host limit
 
@@ -15,7 +15,7 @@ async def lookup_vehicle(registration):
     """
     Main function to look up vehicle performance data
     """
-    # Create a connector with optimized settings
+    # Create a connector with optimised settings
     connector = aiohttp.TCPConnector(
         limit=conn_limit,
         limit_per_host=conn_limit_per_host,
